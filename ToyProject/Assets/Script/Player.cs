@@ -1,44 +1,78 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     public Vector2 inputVec;
     public float speed;
+    public Scanner scaneer;
+    public RuntimeAnimatorController[] animCon;
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
     Animator anim;
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();    
+        scaneer  = GetComponent<Scanner>();  
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        inputVec.x = Input.GetAxis("Horizontal");
-        inputVec.y = Input.GetAxis("Vertical");
-        
-    }
+	private void OnEnable()
+	{
+        speed *= Character.Speed;
+        anim.runtimeAnimatorController = animCon[GameManager.Instance.playerId];
+	}
 
 	private void FixedUpdate()
 	{
-        Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
+		if (!GameManager.Instance.isLive)
+			return;
+
+		Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
 	}
 
     private void LateUpdate()
-    {
-        anim.SetFloat("Speed",inputVec.magnitude);
+	{
+		if (!GameManager.Instance.isLive)
+			return;
+
+		anim.SetFloat("Speed",inputVec.magnitude);
 
         if (inputVec.x != 0)
         {
             spriter.flipX = inputVec.x < 0;
         }
     }
+
+	private void OnCollisionStay2D(Collision2D collision)
+	{
+        if (!GameManager.Instance.isLive)
+            return;
+
+        GameManager.Instance.health -= Time.deltaTime * 10;
+
+        if(GameManager.Instance.health < 0)
+        {
+            for(int index =2;  index < transform.childCount; index ++)
+            {
+                transform.GetChild(index).gameObject.SetActive(false);
+            }
+
+            anim.SetTrigger("Dead");
+            GameManager.Instance.GameOver();
+        }
+	}
+
+	private void OnMove(InputValue value)
+	{
+        if (!GameManager.Instance.isLive)
+            return;
+        inputVec = value.Get<Vector2>();
+	}
 }
