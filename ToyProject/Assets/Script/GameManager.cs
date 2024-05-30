@@ -34,6 +34,18 @@ public class GameManager : MonoBehaviour
 		Application.targetFrameRate = 60;
 	}
 
+	public void GameStart(int id)
+	{
+		playerId = id;
+		health = maxHealth;
+		player.gameObject.SetActive(true);
+		uiLevelUp.Select(playerId );
+		Resume();
+
+		AudioManager.instance.PlayBgm(true);
+		AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+	}
+
 	public void GameOver()
 	{
 		StartCoroutine(GameOverRoutine());
@@ -81,17 +93,7 @@ public class GameManager : MonoBehaviour
 		Application.Quit();
 	}
 
-	public void GameStart(int id)
-	{
-		playerId = id;
-		health = maxHealth;
-		player.gameObject.SetActive(true);
-		uiLevelUp.Select(playerId % 2);
-		Resume();
 
-		AudioManager.instance.PlayBgm(true);
-		AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
-	}
 
 	private void Update()
 	{
@@ -116,8 +118,8 @@ public class GameManager : MonoBehaviour
 		{
 			level++;
 			exp = 0;
+			uiLevelUp.Show();	
 		}
-		uiLevelUp.Show();	
 	}
 
 	public void Stop()

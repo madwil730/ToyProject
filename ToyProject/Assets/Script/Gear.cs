@@ -24,7 +24,7 @@ public class Gear : MonoBehaviour
 		ApplyGear();
 	}
 
-	void ApplyGear()
+	public void ApplyGear()
 	{
 		switch (type) 
 		{

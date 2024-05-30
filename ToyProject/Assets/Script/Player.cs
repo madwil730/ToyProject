@@ -7,14 +7,16 @@ public class Player : MonoBehaviour
 {
     public Vector2 inputVec;
     public float speed;
+    // 수정 
     public Scanner scaneer;
     public RuntimeAnimatorController[] animCon;
-
     Rigidbody2D rigid;
     SpriteRenderer spriter;
     Animator anim;
+    [SerializeField]
+	private RectTransform healthBar;
 
-    void Awake()
+	void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
@@ -28,27 +30,25 @@ public class Player : MonoBehaviour
         anim.runtimeAnimatorController = animCon[GameManager.Instance.playerId];
 	}
 
-	private void FixedUpdate()
+    // 플레이어 이동
+	private void Update()
 	{
 		if (!GameManager.Instance.isLive)
 			return;
+
+		healthBar.position = Camera.main.WorldToScreenPoint(GameManager.Instance.player.transform.position);
 
 		Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
+
+		anim.SetFloat("Speed", inputVec.magnitude);
+
+		if (inputVec.x != 0)
+		{
+			spriter.flipX = inputVec.x < 0;
+		}
 	}
 
-    private void LateUpdate()
-	{
-		if (!GameManager.Instance.isLive)
-			return;
-
-		anim.SetFloat("Speed",inputVec.magnitude);
-
-        if (inputVec.x != 0)
-        {
-            spriter.flipX = inputVec.x < 0;
-        }
-    }
 
 	private void OnCollisionStay2D(Collision2D collision)
 	{
@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
         }
 	}
 
+    // 조이스틱 input 시스템
 	private void OnMove(InputValue value)
 	{
         if (!GameManager.Instance.isLive)

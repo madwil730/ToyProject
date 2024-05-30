@@ -1,56 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float speed;
-	public float health;
-	public float maxHealth;	
+    private float speed;
+	private float health;
+	private float maxHealth;	
 	public RuntimeAnimatorController[] animCon;
-    public Rigidbody2D target;
+    private Rigidbody2D target;
 
-    bool isLive = true;
+    public bool isLive = true;
 
-    Rigidbody2D rigid;
-	Collider2D coll;
-	Animator anim;
-    SpriteRenderer spriter;
-	WaitForFixedUpdate wait;
-
-	private void Awake()
-	{
-		rigid = GetComponent<Rigidbody2D>();    
-		coll = GetComponent<Collider2D>();
-		anim = GetComponent<Animator>();
-        spriter = GetComponent<SpriteRenderer>();   
-		wait = new WaitForFixedUpdate();
-	}
-
-	private void FixedUpdate()
-	{
-		if (!GameManager.Instance.isLive)
-			return;
-
-		if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
-			return;
-
-		Vector2 dirVec = target.position - rigid.position;
-		Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
-		rigid.MovePosition(rigid.position + nextVec);
-		rigid.velocity = Vector2.zero;
-	}
-
-	private void LateUpdate()
-	{
-		if (!GameManager.Instance.isLive)
-			return;
-
-		if (!isLive)
-			return;
-
-		spriter.flipX = target.position.x < rigid.position.x;
-	}
+	[SerializeField]
+    private Rigidbody2D rigid;
+	[SerializeField]
+	private Collider2D coll;
+	[SerializeField]
+	private Animator anim;
+	[SerializeField]
+	private SpriteRenderer spriter;
 
 	private void OnEnable()
 	{
@@ -62,6 +32,34 @@ public class Enemy : MonoBehaviour
 		anim.SetBool("Dead", false);
 		health = maxHealth;
 	}
+
+	private void Update()
+	{
+		if (!GameManager.Instance.isLive)
+			return;
+
+		if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+			return;
+
+		Vector2 dirVec = target.position - rigid.position;
+		Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
+		rigid.MovePosition(rigid.position + nextVec);
+		rigid.velocity = Vector2.zero;
+
+		spriter.flipX = target.position.x < rigid.position.x;
+
+		if(Vector2.Distance(target.position,rigid.position) >10)
+		{
+			Vector3 playerDir = GameManager.Instance.player.inputVec;
+			float dirX = playerDir.x < 0 ? -1 : 1;
+			float dirY = playerDir.y < 0 ? -1 : 1;
+
+			transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
+		}
+
+	
+	}
+
 
 	public void Init(SpawnData data)
 	{
@@ -86,16 +84,17 @@ public class Enemy : MonoBehaviour
 		}
 		else
 		{
-			isLive = false;	
+			isLive = false;
+			
+			spriter.sortingOrder = 1;
 			coll.enabled = false;
 			rigid.simulated = false;
-			spriter.sortingOrder = 1;
 			anim.SetBool("Dead", true);
 			GameManager.Instance.kill++;
 			GameManager.Instance.GetExp();
 
-			if(GameManager.Instance.isLive)
-			AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
+			if (GameManager.Instance.isLive)
+				AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
 		}
 	}
 

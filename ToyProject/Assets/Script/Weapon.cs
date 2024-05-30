@@ -19,32 +19,6 @@ public class Weapon : MonoBehaviour
         player = GameManager.Instance.player;
 	}
 
-	// Update is called once per frame
-	void Update()
-    {
-		if (!GameManager.Instance.isLive)
-			return;
-
-		switch (id)
-        {
-            case 0:
-                transform.Rotate(Vector3.back * speed * Time.deltaTime);
-                break;
-
-            default:
-                timer += Time.deltaTime;
-
-                if(timer  > speed)
-                {
-                    timer = 0;
-                    Fire(); 
-                }
-                break;
-        }
-
-        player.BroadcastMessage("ApplyGear",SendMessageOptions.DontRequireReceiver);
-    }
-
     public void LevelUp(float damage, int count)
     {
 		this.damage = damage *  Character.Damage;
@@ -53,7 +27,7 @@ public class Weapon : MonoBehaviour
         if (id == 0)
             Batch();
 
-		player.BroadcastMessage("ApplyGear");
+		player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
 	}
 
     public void Init(ItemData data)
@@ -77,6 +51,7 @@ public class Weapon : MonoBehaviour
             }
         }
 
+        // 캐릭터 id 정보 받는 곳 
         switch (id)
         { 
             case 0:
@@ -86,7 +61,7 @@ public class Weapon : MonoBehaviour
 
             default:
                 speed = 0.5f * Character.WeaponRate;
-                break; 
+				break; 
         
         }
     }
@@ -120,7 +95,7 @@ public class Weapon : MonoBehaviour
 
     void Fire()
     {
-        if (!player.scaneer.nearestTarget)
+        if (player.scaneer.nearestTarget == null)
             return;
 
         Vector3 targetPos = player.scaneer.nearestTarget.position;
@@ -133,5 +108,31 @@ public class Weapon : MonoBehaviour
         bullet.GetComponent<Bullet>().Init(damage, count, dir);
 
 		AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
+	}
+
+
+	void Update()
+	{
+		if (!GameManager.Instance.isLive)
+			return;
+
+		switch (id)
+		{
+			case 0:
+				transform.Rotate(Vector3.back * speed * Time.deltaTime);
+				break;
+
+			default:
+				timer += Time.deltaTime;
+
+				if (timer > speed)
+				{
+					timer = 0;
+					Fire();
+				}
+				break;
+		}
+
+		player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
 	}
 }
