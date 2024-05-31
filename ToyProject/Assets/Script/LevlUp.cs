@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LevlUp : MonoBehaviour
 {
-    RectTransform rect;
-	Item[] items;
+    private RectTransform rect;
+	private Item[] items;
 
 	private void Awake()
 	{

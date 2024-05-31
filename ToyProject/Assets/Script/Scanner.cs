@@ -10,7 +10,7 @@ public class Scanner : MonoBehaviour
 	public RaycastHit2D[] targets;
 	public Transform nearestTarget;
 
-	private void FixedUpdate()
+	private void Update()
 	{
 		targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.zero, 0, targetLayer);
 		nearestTarget = GetNearest();

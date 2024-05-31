@@ -8,8 +8,8 @@ public class HUD : MonoBehaviour
 	public enum InfoType { Exp, Level, Kill, Time, Health}
 	public InfoType type;
 
-	Text myText;
-	Slider mySlider;
+	private Text myText;
+	private Slider mySlider;
 
 	private void Awake()
 	{
@@ -19,7 +19,7 @@ public class HUD : MonoBehaviour
 
 
 
-	private void LateUpdate()
+	private void Update()
 	{
 		switch(type)
 		{
