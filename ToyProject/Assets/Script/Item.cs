@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,6 +10,7 @@ public class Item : MonoBehaviour
     public ItemData data;
     public int level;
     public Weapon weapon;
+    public GameObject shovel;
 	public Gear gear;
 
     Image icon;
@@ -59,6 +61,8 @@ public class Item : MonoBehaviour
 				{
 					GameObject newWeapon = new GameObject();
 					weapon = newWeapon.AddComponent<Weapon>();
+			
+
 					weapon.Init(data);
 				}
 				else

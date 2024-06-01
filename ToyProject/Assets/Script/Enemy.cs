@@ -41,21 +41,21 @@ public class Enemy : MonoBehaviour
 		if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
 			return;
 
-		Vector2 dirVec = target.position - rigid.position;
-		Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
-		rigid.MovePosition(rigid.position + nextVec);
-		rigid.velocity = Vector2.zero;
+		//Vector2 dirVec = target.position - rigid.position;
+		//Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
+		//rigid.MovePosition(rigid.position + nextVec);
+		//rigid.velocity = Vector2.zero;
 
-		spriter.flipX = target.position.x < rigid.position.x;
+		//spriter.flipX = target.position.x < rigid.position.x;
 
-		if(Vector2.Distance(target.position,rigid.position) >10)
-		{
-			Vector3 playerDir = GameManager.Instance.player.inputVec;
-			float dirX = playerDir.x < 0 ? -1 : 1;
-			float dirY = playerDir.y < 0 ? -1 : 1;
+		//if(Vector2.Distance(target.position,rigid.position) >10)
+		//{
+		//	Vector3 playerDir = GameManager.Instance.player.inputVec;
+		//	float dirX = playerDir.x < 0 ? -1 : 1;
+		//	float dirY = playerDir.y < 0 ? -1 : 1;
 
-			transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
-		}
+		//	transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
+		//}
 
 	
 	}

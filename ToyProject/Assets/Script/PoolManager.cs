@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,7 +36,7 @@ public class PoolManager : MonoBehaviour
 
         if(!select)
         {
-            select = Instantiate(prefabs[index], transform);
+            select = PhotonNetwork.Instantiate(prefabs[index].name, Vector3.zero, Quaternion.identity);
             pools[index].Add(select);       
         }
 

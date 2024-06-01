@@ -5,11 +5,16 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [HideInInspector]
     public int id;
-    public int prefabId;
-    public float damage;
-    public int count;
-    public float speed;
+	[HideInInspector]
+	public int prefabId;
+	[HideInInspector]
+	public float damage;
+	[HideInInspector]
+	public int count;
+	[HideInInspector]
+	public float speed;
 
     float timer;
     Player player;
@@ -32,9 +37,11 @@ public class Weapon : MonoBehaviour
 
     public void Init(ItemData data)
     {
+		player = GameManager.Instance.player;
+		Debug.Log(data.itemName);
         //Basic Set
         name = "Weapon " + data.itemId;
-        transform.parent = player.transform;
+        transform.parent = GameManager.Instance.player.transform;
         transform.localPosition = Vector3.zero;
 
         // Property Set
@@ -70,25 +77,25 @@ public class Weapon : MonoBehaviour
     {
         for(int index = 0; index < count;  index++)
         {
-            Transform bullet;
+            Transform childWeapon;
             if (index < transform.childCount)
             {
-                bullet = transform.GetChild(index);
+                childWeapon = transform.GetChild(index);
             }
             else
             {
-                bullet = GameManager.Instance.pool.Get(prefabId).transform;
-                bullet.parent = transform;
+                childWeapon = GameManager.Instance.pool.Get(prefabId).transform;
+                childWeapon.parent = transform;
             }
      
 
-            bullet.localPosition = Vector3.zero;
-            bullet.localRotation = Quaternion.identity;
+            childWeapon.localPosition = Vector3.zero;
+            childWeapon.localRotation = Quaternion.identity;
 
             Vector3 rotVec  = Vector3.forward * 360 * index / count;
-            bullet.Rotate(rotVec);
-            bullet.Translate(bullet.up * 1.5f, Space.World);
-            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero);
+            childWeapon.Rotate(rotVec);
+            childWeapon.Translate(childWeapon.up * 1.5f, Space.World);
+            childWeapon.GetComponent<Bullet>().Init(damage, -1, Vector3.zero);
         }
 
     }
@@ -133,6 +140,6 @@ public class Weapon : MonoBehaviour
 				break;
 		}
 
-		player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
+		//player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
 	}
 }

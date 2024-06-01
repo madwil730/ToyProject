@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+	[HideInInspector]
 	public float damage;
+	[HideInInspector]
 	public int per;
 
-	Rigidbody2D rigid;
+	private Rigidbody2D rigid;
 
 	private void Awake()
 	{

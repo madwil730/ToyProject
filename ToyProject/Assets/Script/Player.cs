@@ -1,3 +1,5 @@
+using Cinemachine;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +7,8 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public Vector2 inputVec;
+	public PhotonView PV;
+	public Vector2 inputVec;
     public float speed;
     // 수정 
     public Scanner scaneer;
@@ -21,8 +24,18 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();    
-        scaneer  = GetComponent<Scanner>();  
-    }
+        scaneer  = GetComponent<Scanner>();
+
+
+		if (PV.IsMine)
+		{
+			// 2D 카메라
+			var CM = GameObject.Find("Virtual Camera").GetComponent<CinemachineVirtualCamera>();
+			CM.Follow = transform;
+			CM.LookAt = transform;
+		}
+
+	}
 
 	private void OnEnable()
 	{
@@ -36,7 +49,7 @@ public class Player : MonoBehaviour
 		if (!GameManager.Instance.isLive)
 			return;
 
-		healthBar.position = Camera.main.WorldToScreenPoint(GameManager.Instance.player.transform.position);
+		//healthBar.position = Camera.main.WorldToScreenPoint(GameManager.Instance.player.transform.position);
 
 		Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);

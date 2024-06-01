@@ -31,14 +31,12 @@ public class GameManager : MonoBehaviour
 	private void Awake()
 	{
 		Instance = this;
-		Application.targetFrameRate = 60;
 	}
 
 	public void GameStart(int id)
 	{
 		playerId = id;
 		health = maxHealth;
-		player.gameObject.SetActive(true);
 		uiLevelUp.Select(playerId );
 		Resume();
 
