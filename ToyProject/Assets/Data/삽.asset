@@ -26,4 +26,4 @@ MonoBehaviour:
   - 2
   - 3
   counts: 0100000001000000010000000100000002000000
-  projectile: {fileID: 2381476931836283391, guid: 0ebe2a66e9be9d84d95dc55e7ca1d5c5, type: 3}
+  prefab: {fileID: 2381476931836283391, guid: c2bf44fcb1c4bbc499283be52d6fe867, type: 3}

@@ -16,8 +16,11 @@ public class Player : MonoBehaviour
     Rigidbody2D rigid;
     SpriteRenderer spriter;
     Animator anim;
+	public Transform Center;
     [SerializeField]
 	private RectTransform healthBar;
+	GameObject ob;
+	public Transform parentTransform; // 부모가 될 Transform
 
 	void Awake()
     {
@@ -59,6 +62,25 @@ public class Player : MonoBehaviour
 		if (inputVec.x != 0)
 		{
 			spriter.flipX = inputVec.x < 0;
+		}
+
+	
+		// 스페이스 총알 발사
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+
+			// PhotonNetwork.Instantiate를 사용하여 객체 생성
+			GameObject instantiatedObject = PhotonNetwork.Instantiate("Weapon/Cube", Vector3.zero, Quaternion.identity);
+
+			// 부모 설정을 동기화하는 RPC 호출
+			if (instantiatedObject != null)
+			{
+				PhotonView photonView = instantiatedObject.GetComponent<PhotonView>();
+				if (photonView != null)
+				{
+					photonView.RPC("SetParentRPC", RpcTarget.AllBuffered, PV.ViewID);
+				}
+			}
 		}
 	}
 

@@ -26,11 +26,15 @@ public class GameManager : MonoBehaviour
 	public Result uiResult;
 	public Transform uiJoy;
 	public GameObject enemyCleaner;
-
+	
+	//WeaponDatas
+	[HideInInspector]
+	public float shovelSpeed;
 
 	private void Awake()
 	{
 		Instance = this;
+
 	}
 
 	public void GameStart(int id)
@@ -39,6 +43,7 @@ public class GameManager : MonoBehaviour
 		health = maxHealth;
 		uiLevelUp.Select(playerId );
 		Resume();
+
 
 		AudioManager.instance.PlayBgm(true);
 		AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);

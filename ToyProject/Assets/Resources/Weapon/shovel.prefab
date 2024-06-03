@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 442478083512657247}
   - component: {fileID: 4055447382078594414}
   - component: {fileID: 6905411223907427411}
-  - component: {fileID: 8250899853489572064}
+  - component: {fileID: 5193866618647715196}
+  - component: {fileID: -9157499169943421079}
   m_Layer: 0
-  m_Name: shovel
+  m_Name: Shovel
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,7 +132,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3888889, y: 1}
   m_EdgeRadius: 0
---- !u!114 &8250899853489572064
+--- !u!114 &5193866618647715196
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,8 +141,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 2381476931836283391}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53f4296659d443b4d92568172e988068, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
-  per: 0
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: 0
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 0}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &-9157499169943421079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2381476931836283391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ed9ad6be453d44baccd39b40694877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  prefabId: 1
+  damage: 4.5
+  count: 3
+  speed: 10
+  per: -1
+  pv: {fileID: 5193866618647715196}

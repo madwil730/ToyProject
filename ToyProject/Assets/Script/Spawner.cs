@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public class Spawner : MonoBehaviourPunCallbacks
 {
     public Transform[] spawnPoint;
     public SpawnData[] spawnData;
@@ -14,15 +14,11 @@ public class Spawner : MonoBehaviour
 	private void Awake()
 	{
 		spawnPoint = GetComponentsInChildren<Transform>();
-        //Spawn();
-        //Spawn();
-        //Spawn();
-        //Spawn();
-        //Spawn();
+	
 
 	}
 
-	private void FixedUpdate()
+	private void Update()
 	{
 		if (!GameManager.Instance.isLive)
 			return;
@@ -41,16 +37,19 @@ public class Spawner : MonoBehaviour
 		//    Spawn();
 
 		//}
+
+		if (Input.GetKeyDown(KeyCode.A) &&PhotonNetwork.IsMasterClient )
+			Spawn();
 	}
 
 
 
     public void Spawn()
     {
-       GameObject enemy =    GameManager.Instance.pool.Get(0);
-        enemy.transform.position = spawnPoint[Random.Range(1,spawnPoint.Length)].position;
-        enemy.GetComponent<Enemy>().Init(spawnData[level]);
-    }
+		GameObject enemy = GameManager.Instance.pool.Get(0);
+		enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+		enemy.GetComponent<Enemy>().Init(spawnData[level]);
+	}
 }
 
 

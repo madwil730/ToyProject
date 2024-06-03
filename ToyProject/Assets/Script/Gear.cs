@@ -46,11 +46,9 @@ public class Gear : MonoBehaviour
 			switch(weapon.id)
 			{
 				case 0:
-					float speed = 150 * Character.WeaponRate;
-					weapon.speed = 150 + (150 * rate);
+					GameManager.Instance.shovelSpeed = 150 + (150 * rate);
 					break;
 				default:
-					speed = 0.5f * Character.WeaponRate;
 					weapon.speed = 0.5f *  (1f - rate);
 					break;
 			}

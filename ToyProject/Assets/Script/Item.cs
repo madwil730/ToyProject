@@ -10,13 +10,12 @@ public class Item : MonoBehaviour
     public ItemData data;
     public int level;
     public Weapon weapon;
-    public GameObject shovel;
-	public Gear gear;
+	private Gear gear;
 
-    Image icon;
-    Text textlevel;
-	Text textName;
-	Text textDesc;
+	private Image icon;
+	private Text textlevel;
+	private Text textName;
+	private Text textDesc;
 
 	private void Awake()
 	{
@@ -59,10 +58,6 @@ public class Item : MonoBehaviour
 			case ItemData.ItemType.Range:
 				if(level == 0)
 				{
-					GameObject newWeapon = new GameObject();
-					weapon = newWeapon.AddComponent<Weapon>();
-			
-
 					weapon.Init(data);
 				}
 				else

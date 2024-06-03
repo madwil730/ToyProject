@@ -9,6 +9,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
 	void Awake()
 	{
+		Screen.SetResolution(1600, 900,false);
 		PhotonNetwork.SendRate = 60;
 		PhotonNetwork.SerializationRate = 30;
 
@@ -28,7 +29,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
 	public override void OnJoinedRoom()
 	{
-		GameManager.Instance.player = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity).GetComponent<Player>();
+		GameManager.Instance.player = PhotonNetwork.Instantiate("Character/Player", Vector3.zero, Quaternion.identity).GetComponent<Player>();
 
 		GameManager.Instance.GameStart(0);
 	}

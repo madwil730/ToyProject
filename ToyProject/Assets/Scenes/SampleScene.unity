@@ -13979,7 +13979,7 @@ GameObject:
   - component: {fileID: 521913049}
   - component: {fileID: 521913048}
   m_Layer: 5
-  m_Name: Item0
+  m_Name: ItemShovel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14022,9 +14022,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: c7360a0995f709b4d9fa907d285cef20, type: 2}
   level: 0
-  weapon: {fileID: 0}
-  shovel: {fileID: 0}
-  gear: {fileID: 0}
+  weapon: {fileID: -9157499169943421079, guid: c2bf44fcb1c4bbc499283be52d6fe867, type: 3}
 --- !u!114 &521913049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15036,6 +15034,7 @@ MonoBehaviour:
   uiResult: {fileID: 1855504716}
   uiJoy: {fileID: 745890844}
   enemyCleaner: {fileID: 1514457525}
+  shovelSpeed: 0
 --- !u!4 &724234442
 Transform:
   m_ObjectHideFlags: 0
@@ -15747,7 +15746,7 @@ GameObject:
   - component: {fileID: 942767041}
   - component: {fileID: 942767040}
   m_Layer: 5
-  m_Name: Item0 (1)
+  m_Name: ItemBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15791,8 +15790,6 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 97b65e02eef5fdf44b8c063912eda7e6, type: 2}
   level: 0
   weapon: {fileID: 0}
-  shovel: {fileID: 0}
-  gear: {fileID: 0}
 --- !u!114 &942767041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16196,7 +16193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 7301295288757908530, guid: e7515ed729525c440bdfadee0b589a3e, type: 3}
-  - {fileID: 2381476931836283391, guid: 0ebe2a66e9be9d84d95dc55e7ca1d5c5, type: 3}
+  - {fileID: 2381476931836283391, guid: c2bf44fcb1c4bbc499283be52d6fe867, type: 3}
   - {fileID: 3955566686451363747, guid: 4638cfd342f0339438e0c0fa2aeb2562, type: 3}
 --- !u!4 &976833507
 Transform:
@@ -16779,7 +16776,7 @@ GameObject:
   - component: {fileID: 1342399634}
   - component: {fileID: 1342399633}
   m_Layer: 5
-  m_Name: Item0 (3)
+  m_Name: ItemShoes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16823,8 +16820,6 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 7c0bb4b1bb7129644b15f5c4272fd47c, type: 2}
   level: 0
   weapon: {fileID: 0}
-  shovel: {fileID: 0}
-  gear: {fileID: 0}
 --- !u!114 &1342399634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17270,8 +17265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53f4296659d443b4d92568172e988068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1000000
-  per: -1
 --- !u!61 &1514457527
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17516,7 +17509,7 @@ GameObject:
   - component: {fileID: 1582668579}
   - component: {fileID: 1582668578}
   m_Layer: 5
-  m_Name: Item0 (4)
+  m_Name: ItemEngery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17560,8 +17553,6 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 6baa9548effa5ce4aaed2120c0463508, type: 2}
   level: 0
   weapon: {fileID: 0}
-  shovel: {fileID: 0}
-  gear: {fileID: 0}
 --- !u!114 &1582668579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23637,7 +23628,7 @@ GameObject:
   - component: {fileID: 2043227673}
   - component: {fileID: 2043227672}
   m_Layer: 5
-  m_Name: Item0 (2)
+  m_Name: ItemGlove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23681,8 +23672,6 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: d48060e6a22db624985b038ff15bd690, type: 2}
   level: 0
   weapon: {fileID: 0}
-  shovel: {fileID: 0}
-  gear: {fileID: 0}
 --- !u!114 &2043227673
 MonoBehaviour:
   m_ObjectHideFlags: 0
