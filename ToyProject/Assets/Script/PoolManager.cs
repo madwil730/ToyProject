@@ -8,7 +8,7 @@ public class PoolManager : MonoBehaviour
 {
     public GameObject[] prefabs;
 
-    List<GameObject>[] pools;
+    public List<GameObject>[] pools;
 
 	private void Awake()
 	{
@@ -41,14 +41,14 @@ public class PoolManager : MonoBehaviour
 
             //부모 설정을 동기화하는 RPC 호출
 
-            if (select != null)
-            {
-                PhotonView photonView = select.GetComponent<PhotonView>();
-                if (photonView != null)
-                {
-                    photonView.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID, count);
-                }
-            }
+            //if (select != null)
+            //{
+            //    PhotonView photonView = select.GetComponent<PhotonView>();
+            //    if (photonView != null)
+            //    {
+            //        photonView.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID, count);
+            //    }
+            //}
 
             pools[prefabindex].Add(select);       
         }

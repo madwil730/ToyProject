@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 
@@ -27,6 +28,7 @@ public class Weapon : MonoBehaviourPunCallbacks
 
 	private float timer;
     private Player player;
+	private List<GameObject> shovelList;
 
 	private void Awake()
 	{
@@ -70,8 +72,17 @@ public class Weapon : MonoBehaviourPunCallbacks
         { 
             case 0:
 				GameManager.Instance.shovelSpeed = 80 * Character.WeaponSpeed;
-                ReadyShovel();
-                break;
+				GameManager.Instance.pool.ShovelGet(prefabId, 1);
+				GameManager.Instance.pool.ShovelGet(prefabId, 1);
+				GameManager.Instance.pool.ShovelGet(prefabId, 1);
+
+				shovelList = GameManager.Instance.pool.pools[prefabId];
+
+				for(int i =0; i< shovelList.Count; i++)
+				{
+					shovelList[i].GetComponent<Weapon>().pv.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID,i , shovelList.Count);
+				}
+				break;
 
             default:
                 speed = 0.5f * Character.WeaponRate;
@@ -86,13 +97,24 @@ public class Weapon : MonoBehaviourPunCallbacks
 	{
 		this.damage = damage * Character.Damage;
 		GameManager.Instance.shovelCount += count;
-		//this.count += count;
 		isbool = true;
 
-		Debug.Log(151235);
 
 		if (id == 0)
-			ReadyShovel();
+		{
+			GameManager.Instance.pool.ShovelGet(prefabId, 1);
+			//shovelList.Clear();
+
+			//shovelList = GameManager.Instance.pool.pools[prefabId];
+
+			Debug.Log(shovelList.Count);
+			Debug.Log(GameManager.Instance.pool.pools[prefabId].Count);
+
+			for (int i = 0; i < shovelList.Count; i++)
+			{
+				shovelList[i].GetComponent<Weapon>().pv.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID, i, shovelList.Count);
+			}
+		}
 
 		//player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
 	}
@@ -120,34 +142,9 @@ public class Weapon : MonoBehaviourPunCallbacks
 		}
     }
 
-
-	void SetParentRPC2( int index)
-	{
-		Debug.Log(GameManager.Instance.shovelCount);
-		Debug.Log(isbool);
-		//PhotonView parentPhotonView = PhotonView.Find(parentViewID);
-		{
-			transform.SetParent(player.Center, true);
-
-
-			this.transform.localPosition = Vector3.zero;
-			this.transform.localRotation = Quaternion.identity;
-
-			Vector3 rotVec = Vector3.forward * 360 * index / GameManager.Instance.shovelCount;
-			Debug.Log(rotVec);
-			this.transform.Rotate(rotVec);
-			this.transform.Translate(this.transform.up * 1.5f, Space.World);
-			Init(damage, -1, Vector3.zero);
-		}
-	}
-
-
-
 	[PunRPC]
-	void SetParentRPC(int parentViewID, int index)
+	void SetParentRPC(int parentViewID, int index, int count)
 	{
-		Debug.Log(GameManager.Instance.shovelCount);
-		Debug.Log(isbool);
 		PhotonView parentPhotonView = PhotonView.Find(parentViewID);
 		if (parentPhotonView != null)
 		{
@@ -157,8 +154,7 @@ public class Weapon : MonoBehaviourPunCallbacks
 			this.transform.localPosition = Vector3.zero;
 			this.transform.localRotation = Quaternion.identity;
 
-			Vector3 rotVec = Vector3.forward * 360 * index / GameManager.Instance.shovelCount;
-			Debug.Log(rotVec);
+			Vector3 rotVec = Vector3.forward * 360 * index / count;
 			this.transform.Rotate(rotVec);
 			this.transform.Translate(this.transform.up * 1.5f, Space.World);
 			Init(damage, -1, Vector3.zero);

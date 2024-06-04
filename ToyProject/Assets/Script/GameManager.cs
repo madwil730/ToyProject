@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
 			GameVictroy();
 		}
 
-		if(Input.GetKeyDown(KeyCode.D))
+		if(Input.GetKeyDown(KeyCode.R))
 			uiLevelUp.Show();
 
 	}

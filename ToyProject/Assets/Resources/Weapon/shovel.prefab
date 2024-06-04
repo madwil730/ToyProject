@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5193866618647715196}
   - component: {fileID: -9157499169943421079}
   m_Layer: 0
-  m_Name: Shovel
+  m_Name: shovel
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
