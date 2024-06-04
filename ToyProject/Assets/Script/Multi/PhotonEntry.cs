@@ -36,11 +36,11 @@ public class PhotonEntry : MonoBehaviourPunCallbacks
 
 	private void Update()
 	{
-		text.text = num.ToString();
-		if(Input.GetKeyDown(KeyCode.A))
-		{
-			PV.RPC("Plus", RpcTarget.AllBuffered);
-		}
+		//text.text = num.ToString();
+		//if(Input.GetKeyDown(KeyCode.A))
+		//{
+		//	PV.RPC("Plus", RpcTarget.AllBuffered);
+		//}
 	}
 
 	[PunRPC]

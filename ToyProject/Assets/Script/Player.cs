@@ -65,23 +65,23 @@ public class Player : MonoBehaviour
 		}
 
 	
-		// 스페이스 총알 발사
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
+		//// 스페이스 총알 발사
+		//if (Input.GetKeyDown(KeyCode.Space))
+		//{
 
-			// PhotonNetwork.Instantiate를 사용하여 객체 생성
-			GameObject instantiatedObject = PhotonNetwork.Instantiate("Weapon/Cube", Vector3.zero, Quaternion.identity);
+		//	// PhotonNetwork.Instantiate를 사용하여 객체 생성
+		//	GameObject instantiatedObject = PhotonNetwork.Instantiate("Weapon/Cube", Vector3.zero, Quaternion.identity);
 
-			// 부모 설정을 동기화하는 RPC 호출
-			if (instantiatedObject != null)
-			{
-				PhotonView photonView = instantiatedObject.GetComponent<PhotonView>();
-				if (photonView != null)
-				{
-					photonView.RPC("SetParentRPC", RpcTarget.AllBuffered, PV.ViewID);
-				}
-			}
-		}
+		//	// 부모 설정을 동기화하는 RPC 호출
+		//	if (instantiatedObject != null)
+		//	{
+		//		PhotonView photonView = instantiatedObject.GetComponent<PhotonView>();
+		//		if (photonView != null)
+		//		{
+		//			photonView.RPC("SetParentRPC", RpcTarget.AllBuffered, PV.ViewID);
+		//		}
+		//	}
+		//}
 	}
 
 

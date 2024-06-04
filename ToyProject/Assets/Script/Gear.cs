@@ -46,7 +46,7 @@ public class Gear : MonoBehaviour
 			switch(weapon.id)
 			{
 				case 0:
-					GameManager.Instance.shovelSpeed = 150 + (150 * rate);
+					//GameManager.Instance.shovelSpeed = 150 + (150 * rate);
 					break;
 				default:
 					weapon.speed = 0.5f *  (1f - rate);

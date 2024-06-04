@@ -1,12 +1,13 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviourPunCallbacks
 {
     private float speed;
-	private float health;
+	public float health;
 	private float maxHealth;	
 	public RuntimeAnimatorController[] animCon;
     private Rigidbody2D target;
@@ -41,6 +42,7 @@ public class Enemy : MonoBehaviour
 		if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
 			return;
 
+
 		//Vector2 dirVec = target.position - rigid.position;
 		//Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
 		//rigid.MovePosition(rigid.position + nextVec);
@@ -57,16 +59,16 @@ public class Enemy : MonoBehaviour
 		//	transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
 		//}
 
-	
+
 	}
 
-
-	public void Init(SpawnData data)
+	[PunRPC]
+	public void Init(int spriteType, float speed, int health)
 	{
-		anim.runtimeAnimatorController = animCon[data.spriteType];
-		speed = data.speed;
-		maxHealth = data.health;
-		health = data.health;
+		anim.runtimeAnimatorController = animCon[spriteType];
+		this.speed = speed;
+		maxHealth = health;
+		this.health = health;
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -74,6 +76,7 @@ public class Enemy : MonoBehaviour
 		if (!collision.CompareTag("Bullet") || !isLive)
 			return;
 
+		Debug.Log(collision.GetComponent<Weapon>().damage);
 		health -= collision.GetComponent<Weapon>().damage;
 		StartCoroutine(KnockBack());
 
@@ -90,8 +93,14 @@ public class Enemy : MonoBehaviour
 			coll.enabled = false;
 			rigid.simulated = false;
 			anim.SetBool("Dead", true);
-			GameManager.Instance.kill++;
-			GameManager.Instance.GetExp();
+
+
+			if ( collision.tag == "Bullet" && collision.GetComponent<PhotonView>().IsMine)
+			{
+				GameManager.Instance.kill++;
+				GameManager.Instance.GetExp();
+			}
+			
 
 			if (GameManager.Instance.isLive)
 				AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);

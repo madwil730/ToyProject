@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
 	//WeaponDatas
 	[HideInInspector]
 	public float shovelSpeed;
+	public int shovelCount = 3;
 
 	private void Awake()
 	{
@@ -109,6 +110,10 @@ public class GameManager : MonoBehaviour
 			gameTime = maxGameTime;
 			GameVictroy();
 		}
+
+		if(Input.GetKeyDown(KeyCode.D))
+			uiLevelUp.Show();
+
 	}
 
 	public void GetExp()
@@ -137,6 +142,11 @@ public class GameManager : MonoBehaviour
 		isLive= true;
 		Time.timeScale = 1;
 		uiJoy.localScale = Vector3.one;
+	}
+
+	public void test()
+	{
+		Debug.Log(2323234);
 	}
 }
 
