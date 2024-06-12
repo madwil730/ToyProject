@@ -136,16 +136,12 @@ public class Weapon : MonoBehaviourPunCallbacks
 		Penetration = PenetrationCount;
 	}
 
-
 	// 총알 관통력 설정
 	[PunRPC]
 	public void SetPenetrationCount(int count)
 	{
 		PenetrationCount = count;
 	}
-
-
-
 
 	//탄알 관통력
 	void OnTriggerEnter2D(Collider2D collision)

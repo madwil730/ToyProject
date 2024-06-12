@@ -14,7 +14,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
 	public int prefabId;
 	[HideInInspector]
 	public float speed;
-	private Weapon InitWeapon;
+	private WeaponAbstract InitWeapon;
 	private List<GameObject> shovelList;
 	private List<GameObject> bulletList;
 
@@ -47,7 +47,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
 
 				for (int i = 0; i < shovelList.Count; i++)
 				{
-					InitWeapon = shovelList[i].GetComponent<Weapon>();
+					InitWeapon = shovelList[i].GetComponent<WeaponAbstract>();
 					InitWeapon.damage = data.baseDamage * Character.Damage;
 					InitWeapon.pv.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID, i, shovelList.Count);
 				}
@@ -57,7 +57,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
 				GameObject bullet = GameManager.Instance.pool.Get("Weapon/", prefabId);
 				bullet.transform.position = new Vector3(500, 500, 0);
 
-				InitWeapon = bullet.GetComponent<Weapon>();
+				InitWeapon = bullet.GetComponent<WeaponAbstract>();
 				InitWeapon.damage = data.baseDamage * Character.Damage;
 				InitWeapon.pv.RPC("SetPenetrationCount", RpcTarget.AllBuffered, data.baseCount);
 
@@ -94,8 +94,8 @@ public class WeaponManager : MonoBehaviourPunCallbacks
 
 			for (int index = 0; index < shovelList.Count; index++)
 			{
-				shovelList[index].GetComponent<Weapon>().damage = damage * Character.Damage;
-				shovelList[index].GetComponent<Weapon>().pv.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID, index, shovelList.Count);
+				shovelList[index].GetComponent<WeaponAbstract>().damage = damage * Character.Damage;
+				shovelList[index].GetComponent<WeaponAbstract>().pv.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID, index, shovelList.Count);
 			}
 		}
 
@@ -103,7 +103,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
 		{
 			for (int index = 0; index < bulletList.Count; index++)
 			{
-				bulletList[index].GetComponent<Weapon>().PenetrationCount = count;
+				bulletList[index].GetComponent<Bullet>().PenetrationCount = count;
 			}
 		}
 	}

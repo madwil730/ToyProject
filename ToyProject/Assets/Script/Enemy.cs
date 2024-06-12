@@ -72,7 +72,6 @@ public class Enemy : MonoBehaviourPunCallbacks
 		this.health = health;
 	}
 
-	private bool alreadyHit = false;
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -80,7 +79,7 @@ public class Enemy : MonoBehaviourPunCallbacks
 			return;
 
 
-		health -= collision.GetComponent<Weapon>().damage;
+		health -= collision.GetComponent<WeaponAbstract>().damage;
 	
 		PhotonView photonView = GetComponent<PhotonView>();
 
@@ -112,23 +111,6 @@ public class Enemy : MonoBehaviourPunCallbacks
 			if (GameManager.Instance.isLive)
 				AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
 		}
-	}
-
-	[PunRPC]
-	public void PenetrationCount(Collider2D collision)
-	{
-		Weapon weapon = collision.GetComponent<Weapon>();
-		if (weapon.id == 1)
-		{
-			weapon.Penetration--;
-
-			{
-				weapon.transform.position = new Vector3(500, 500, 0);
-				weapon.rigid.velocity = Vector2.zero;
-			}
-		}
-
-		alreadyHit = false;
 	}
 
 

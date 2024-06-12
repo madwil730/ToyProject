@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4055447382078594414}
   - component: {fileID: 6905411223907427411}
   - component: {fileID: 5193866618647715196}
-  - component: {fileID: -9157499169943421079}
+  - component: {fileID: -4012094717238711261}
   m_Layer: 0
   m_Name: shovel
   m_TagString: Bullet
@@ -155,7 +155,7 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-9157499169943421079
+--- !u!114 &-4012094717238711261
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,13 +164,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2381476931836283391}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25ed9ad6be453d44baccd39b40694877, type: 3}
+  m_Script: {fileID: 11500000, guid: 65a2b9953e89267488b17f9099df90bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
   damage: 4.5
-  weaponSpeed: 0
-  PenetrationCount: 0
-  Penetration: 0
   rigid: {fileID: 0}
   pv: {fileID: 5193866618647715196}
+  player: {fileID: 0}
