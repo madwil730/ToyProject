@@ -60,9 +60,10 @@ public class WeaponManager : MonoBehaviourPunCallbacks
 				InitWeapon = bullet.GetComponent<Weapon>();
 				InitWeapon.damage = data.baseDamage * Character.Damage;
 				InitWeapon.weaponSpeed = 0.5f;
-				InitWeapon.PenetrationCount = data.baseCount;
+				InitWeapon.pv.RPC("SetPenetrationCount", RpcTarget.AllBuffered, data.baseCount);
+				//InitWeapon.PenetrationCount = data.baseCount;
 				//bullet.GetComponent<PhotonView>().RPC("ReadyFire", RpcTarget.AllBuffered);
-			
+
 				bulletList = GameManager.Instance.pool.pools[prefabId];
 
 				break;

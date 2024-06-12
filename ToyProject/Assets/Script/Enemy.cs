@@ -86,7 +86,12 @@ public class Enemy : MonoBehaviourPunCallbacks
 		//}
 
 		health -= collision.GetComponent<Weapon>().damage;
-		//PhotonView photonView = GetComponent<PhotonView>();
+	
+		PhotonView photonView = GetComponent<PhotonView>();
+
+		//if (!photonView.IsMine)
+		//	photonView.RPC("PenetrationCount", RpcTarget.AllBuffered, collision);
+			//PenetrationCount(collision);
 
 		//if (photonView != null)
 		//{
@@ -94,14 +99,14 @@ public class Enemy : MonoBehaviourPunCallbacks
 		//	{
 		//		health -= collision.GetComponent<Weapon>().damage;
 		//		Debug.Log("This object is instantiated locally.");
-		//		//PenetrationCount(collision);
+		//		PenetrationCount(collision);
 		//	}
-		//	else if(!alreadyHit)
+		//	else if (!alreadyHit)
 		//	{
 		//		alreadyHit = true;
 		//		health -= collision.GetComponent<Weapon>().damage;
 		//		Debug.Log("This object is instantiated remotely. And Health Damage");
-		//		//PenetrationCount(collision);
+		//		PenetrationCount(collision);
 		//	}
 		//}
 
@@ -139,13 +144,14 @@ public class Enemy : MonoBehaviourPunCallbacks
 		}
 	}
 
+	[PunRPC]
 	public void PenetrationCount(Collider2D collision)
 	{
 		Weapon weapon = collision.GetComponent<Weapon>();
-		if (weapon.id == 1 && !weapon.pv.IsMine)
+		if (weapon.id == 1)
 		{
 			//Debug.Log("isCount");
-			//weapon.Penetration--;
+			weapon.Penetration--;
 			//Debug.Log(weapon.Penetration);
 
 			//if (weapon.Penetration == 0)

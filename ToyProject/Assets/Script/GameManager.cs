@@ -116,8 +116,6 @@ public class GameManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.R))
 			uiLevelUp.Show();
 
-		if (Input.GetKeyDown(KeyCode.Q))
-			FindRemotePlayerPhotonViews();
 
 	}
 
@@ -153,13 +151,12 @@ public class GameManager : MonoBehaviour
 	{
 		Photon.Realtime.Player[] allPlayers = PhotonNetwork.PlayerList;
 
-		Debug.Log(allPlayers.Length);
 
 		foreach (Photon.Realtime.Player player in allPlayers)
 		{
 			if (!player.IsLocal) // 로컬 플레이어가 아닌 경우
 			{
-				Debug.Log("Found a remote player: " + player.NickName + ", ActorNumber: " + player.ActorNumber);
+				//Debug.Log("Found a remote player: " + player.NickName + ", ActorNumber: " + player.ActorNumber);
 
 				// 해당 리모트 플레이어의 PhotonView 찾기
 				PhotonView[] photonViews = FindObjectsOfType<PhotonView>();
@@ -169,12 +166,13 @@ public class GameManager : MonoBehaviour
 					if (pv.Owner != null && pv.Owner == player && pv.gameObject.GetComponent<Player>() != null)
 					{
 						player2P = pv.gameObject;
-						Debug.Log("PhotonView ID: " + pv.ViewID + " belongs to remote player: " + player.NickName);
+						//Debug.Log("PhotonView ID: " + pv.ViewID + " belongs to remote player: " + player.NickName);
 					}
 				}
 			}
 		}
 	}
+
 
 }
 

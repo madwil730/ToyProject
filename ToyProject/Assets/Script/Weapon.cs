@@ -129,14 +129,25 @@ public class Weapon : MonoBehaviourPunCallbacks
 
 		if (Input.GetKeyDown(KeyCode.Space) && id == 1)
 			pv.RPC("ReadyFire", RpcTarget.AllBuffered);
-			//ReadyFire();
+		//ReadyFire();
 
+		if (Input.GetKeyDown(KeyCode.T) && id == 1)
+			pv.RPC("test", RpcTarget.AllBuffered);
 
 	}
 
+	// 쏠때마다 총알 관통 빼는거 재수정 
 	public void SetPenetration()
 	{
 		Penetration = PenetrationCount;
+	}
+
+
+	// 총알 관통력 설정
+	[PunRPC]
+	public void SetPenetrationCount(int count)
+	{
+		PenetrationCount = count;
 	}
 
 
@@ -145,9 +156,28 @@ public class Weapon : MonoBehaviourPunCallbacks
 	//탄알 관통력
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (!collision.CompareTag("Enemy") || Penetration == -1)
+		
+		if (!collision.CompareTag("Enemy") || Penetration == -1 && id ==1)
 			return;
 
+		Debug.Log(2222);
+		Debug.Log(Penetration);
+		Penetration--;
+
+		if (Penetration == 0)
+		{
+			rigid.velocity = Vector2.zero;
+			this.transform.position = new Vector3(500, 500, 0);
+		}
+
+		//if (!pv.IsMine)
+		//pv.RPC("test", RpcTarget.AllBuffered);
+		
+	}
+
+	[PunRPC]
+	private void test()
+	{
 		Penetration--;
 
 		if (Penetration == 0)
@@ -156,4 +186,6 @@ public class Weapon : MonoBehaviourPunCallbacks
 			this.transform.position = new Vector3(500, 500, 0);
 		}
 	}
+
+
 }

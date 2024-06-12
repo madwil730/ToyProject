@@ -53,6 +53,12 @@ MonoBehaviour:
   - ReadyFire
   - Flip
   - HandlePenetration
+  - PenetrationCount
+  - test
+  - Mne
+  - NotMne
+  - SetPenetration
+  - SetPenetrationCount
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

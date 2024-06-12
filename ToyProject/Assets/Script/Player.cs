@@ -60,6 +60,12 @@ public class Player : MonoBehaviour
 
 		anim.SetFloat("Speed", inputVec.magnitude);
 
+		if (Input.GetKeyDown(KeyCode.V))
+			PV.RPC("NotMne", RpcTarget.AllBuffered);
+
+		if (Input.GetKeyDown(KeyCode.B))
+			PV.RPC("Mne", RpcTarget.AllBuffered);
+
 		//PV.RPC("Flip", RpcTarget.AllBuffered);
 	}
 
@@ -97,5 +103,18 @@ public class Player : MonoBehaviour
         if (!GameManager.Instance.isLive)
             return;
         inputVec = value.Get<Vector2>();
+	}
+
+	[PunRPC]
+	private void NotMne()
+	{
+		if(!PV.IsMine)
+		Debug.Log("Not Mine");
+	}
+
+	[PunRPC]
+	private void Mne()
+	{
+		Debug.Log("Mine");
 	}
 }
