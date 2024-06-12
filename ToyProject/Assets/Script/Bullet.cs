@@ -76,7 +76,6 @@ public class Bullet : WeaponAbstract
 
 	
 				waitTimer += Time.deltaTime;
-				Debug.Log(weaponSpeed);
 				if (waitTimer > weaponSpeed)
 				{
 					waitTimer = 0;

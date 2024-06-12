@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 6051383880100845722}
   - component: {fileID: 5019779648517739587}
   - component: {fileID: 1545189361684511989}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -325,7 +325,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2540399982797526774}
   - component: {fileID: 7945830319552857898}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Area
   m_TagString: Area
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3710689648482208605}
   - component: {fileID: 1273226415682884689}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -486,7 +486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9126357260699002779}
   - component: {fileID: 4009183007029256873}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}

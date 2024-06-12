@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,7 +11,7 @@ public class Enemy : MonoBehaviourPunCallbacks
 	public float health;
 	private float maxHealth;	
 	public RuntimeAnimatorController[] animCon;
-    private Rigidbody2D target;
+    //private Rigidbody2D target;
 
     public bool isLive = true;
 	public Scanner scanner;
@@ -24,9 +25,11 @@ public class Enemy : MonoBehaviourPunCallbacks
 	[SerializeField]
 	private SpriteRenderer spriter;
 
+	Vector2 vec2;
+
 	private void OnEnable()
 	{
-		target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
+		//target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
 		isLive = true;
 		coll.enabled = true;
 		rigid.simulated = true;
@@ -43,23 +46,23 @@ public class Enemy : MonoBehaviourPunCallbacks
 		if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
 			return;
 
+		if (scanner.nearestTarget == null)
+			return;
+		Vector2 dirVec = (Vector2)scanner.nearestTarget.position - rigid.position;
+		Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
+		rigid.MovePosition(rigid.position + nextVec);
+		rigid.velocity = Vector2.zero;
 
-		//Vector2 dirVec = target.position - rigid.position;
-		//Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
-		//rigid.MovePosition(rigid.position + nextVec);
-		//rigid.velocity = Vector2.zero;
+		spriter.flipX = scanner.nearestTarget.position.x < rigid.position.x;
 
-		//spriter.flipX = target.position.x < rigid.position.x;
+		if (Vector2.Distance((Vector2)scanner.nearestTarget.position, rigid.position) > 10)
+		{
+			Vector3 playerDir = GameManager.Instance.player.inputVec;
+			float dirX = playerDir.x < 0 ? -1 : 1;
+			float dirY = playerDir.y < 0 ? -1 : 1;
 
-		//if (Vector2.Distance(target.position, rigid.position) > 10)
-		//{
-		//	Vector3 playerDir = GameManager.Instance.player.inputVec;
-		//	float dirX = playerDir.x < 0 ? -1 : 1;
-		//	float dirY = playerDir.y < 0 ? -1 : 1;
-
-		//	transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
-		//}
-
+			transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
+		}
 
 	}
 
