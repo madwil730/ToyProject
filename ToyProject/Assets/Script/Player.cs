@@ -81,6 +81,7 @@ public class Player : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.B))
 			PV.RPC("Mne", RpcTarget.AllBuffered);
 
+		//if(PV.IsMine)
 		//PV.RPC("Flip", RpcTarget.AllBuffered);
 	}
 
@@ -95,7 +96,7 @@ public class Player : MonoBehaviour
 
 	private void OnCollisionStay2D(Collision2D collision)
 	{
-        if (!GameManager.Instance.isLive)
+        if (!GameManager.Instance.isLive || collision.collider.CompareTag("Player"))
             return;
 
         GameManager.Instance.health -= Time.deltaTime * 10;
