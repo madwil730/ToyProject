@@ -12,9 +12,7 @@ public class Weapon : MonoBehaviourPunCallbacks
     [HideInInspector]
     public int id;
 	public float damage;
-	[HideInInspector]
-	public float weaponSpeed;
-	[HideInInspector]
+	public float weaponSpeed = 1;
 	public int PenetrationCount = 0;
 	public int Penetration = 0;
 
@@ -103,7 +101,7 @@ public class Weapon : MonoBehaviourPunCallbacks
 		
 		}
 
-		//AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
+		AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
 	}
 
 
@@ -119,21 +117,17 @@ public class Weapon : MonoBehaviourPunCallbacks
 
 			case 1:
 				timer += Time.deltaTime;
+				Debug.Log(weaponSpeed);
 				if (timer > weaponSpeed)
 				{
 					timer = 0;
-					//ReadyFire();
+					ReadyFire();
 				}
 				break;
 		}
 
 		if (Input.GetKeyDown(KeyCode.Space) && id == 1)
 			pv.RPC("ReadyFire", RpcTarget.AllBuffered);
-		//ReadyFire();
-
-		if (Input.GetKeyDown(KeyCode.T) && id == 1)
-			pv.RPC("test", RpcTarget.AllBuffered);
-
 	}
 
 	// ½ò¶§¸¶´Ù ÃÑ¾Ë °üÅë »©´Â°Å Àç¼öÁ¤ 
@@ -160,24 +154,6 @@ public class Weapon : MonoBehaviourPunCallbacks
 		if (!collision.CompareTag("Enemy") || Penetration == -1 && id ==1)
 			return;
 
-		Debug.Log(2222);
-		Debug.Log(Penetration);
-		Penetration--;
-
-		if (Penetration == 0)
-		{
-			rigid.velocity = Vector2.zero;
-			this.transform.position = new Vector3(500, 500, 0);
-		}
-
-		//if (!pv.IsMine)
-		//pv.RPC("test", RpcTarget.AllBuffered);
-		
-	}
-
-	[PunRPC]
-	private void test()
-	{
 		Penetration--;
 
 		if (Penetration == 0)
@@ -186,6 +162,8 @@ public class Weapon : MonoBehaviourPunCallbacks
 			this.transform.position = new Vector3(500, 500, 0);
 		}
 	}
+
+
 
 
 }

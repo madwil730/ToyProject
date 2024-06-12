@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviourPunCallbacks
     private Rigidbody2D target;
 
     public bool isLive = true;
+	public Scanner scanner;
 
 	[SerializeField]
     private Rigidbody2D rigid;
@@ -50,7 +51,7 @@ public class Enemy : MonoBehaviourPunCallbacks
 
 		//spriter.flipX = target.position.x < rigid.position.x;
 
-		//if(Vector2.Distance(target.position,rigid.position) >10)
+		//if (Vector2.Distance(target.position, rigid.position) > 10)
 		//{
 		//	Vector3 playerDir = GameManager.Instance.player.inputVec;
 		//	float dirX = playerDir.x < 0 ? -1 : 1;
@@ -78,42 +79,11 @@ public class Enemy : MonoBehaviourPunCallbacks
 		if (!collision.CompareTag("Bullet") || !isLive)
 			return;
 
-		//if(collision.GetComponent<PhotonView>().IsMine && !PhotonNetwork.IsMasterClient)
-		//{
-		//	Debug.Log("isHit");
-		//	Debug.Log(collision.gameObject.name);
-
-		//}
 
 		health -= collision.GetComponent<Weapon>().damage;
 	
 		PhotonView photonView = GetComponent<PhotonView>();
 
-		//if (!photonView.IsMine)
-		//	photonView.RPC("PenetrationCount", RpcTarget.AllBuffered, collision);
-			//PenetrationCount(collision);
-
-		//if (photonView != null)
-		//{
-		//	if (photonView.IsMine)
-		//	{
-		//		health -= collision.GetComponent<Weapon>().damage;
-		//		Debug.Log("This object is instantiated locally.");
-		//		PenetrationCount(collision);
-		//	}
-		//	else if (!alreadyHit)
-		//	{
-		//		alreadyHit = true;
-		//		health -= collision.GetComponent<Weapon>().damage;
-		//		Debug.Log("This object is instantiated remotely. And Health Damage");
-		//		PenetrationCount(collision);
-		//	}
-		//}
-
-
-
-
-		//Check();
 		StartCoroutine(KnockBack());
 
 
@@ -150,11 +120,8 @@ public class Enemy : MonoBehaviourPunCallbacks
 		Weapon weapon = collision.GetComponent<Weapon>();
 		if (weapon.id == 1)
 		{
-			//Debug.Log("isCount");
 			weapon.Penetration--;
-			//Debug.Log(weapon.Penetration);
 
-			//if (weapon.Penetration == 0)
 			{
 				weapon.transform.position = new Vector3(500, 500, 0);
 				weapon.rigid.velocity = Vector2.zero;

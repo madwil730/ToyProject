@@ -58,7 +58,7 @@ public class Item : MonoBehaviour
 			case ItemData.ItemType.Range:
 				if(level == 0)
 				{
-					GameManager.Instance.weaponManager.Init(data);
+					GameManager.Instance.weaponManager. Init(data);
 				}
 				else
 				{

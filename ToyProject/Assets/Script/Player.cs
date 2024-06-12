@@ -44,7 +44,22 @@ public class Player : MonoBehaviour
 	private void OnEnable()
 	{
         speed *= Character.Speed;
-        anim.runtimeAnimatorController = animCon[GameManager.Instance.playerId];
+
+		if(PhotonNetwork.IsMasterClient)
+		{
+			if (PV.IsMine)
+				anim.runtimeAnimatorController = animCon[GameManager.Instance.playerId];
+			else
+				anim.runtimeAnimatorController = animCon[1];
+		}
+		else
+		{
+			if (PV.IsMine)
+				anim.runtimeAnimatorController = animCon[1];
+			else
+				anim.runtimeAnimatorController = animCon[0];
+		}
+	
 	}
 
 	// 플레이어 이동
