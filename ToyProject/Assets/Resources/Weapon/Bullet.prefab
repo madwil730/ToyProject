@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2548773845794617841}
   - component: {fileID: 6402114099076706937}
   - component: {fileID: -2564669109691688515}
+  - component: {fileID: 6060328437187716007}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Bullet
@@ -171,3 +172,22 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &6060328437187716007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3955566686451363747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ed9ad6be453d44baccd39b40694877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
+  damage: 3
+  weaponSpeed: 0
+  PenetrationCount: 0
+  Penetration: 0
+  rigid: {fileID: 0}
+  pv: {fileID: -2564669109691688515}

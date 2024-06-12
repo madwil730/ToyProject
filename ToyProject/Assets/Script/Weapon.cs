@@ -4,143 +4,31 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.ConstrainedExecution;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Weapon : MonoBehaviourPunCallbacks
 {
     [HideInInspector]
     public int id;
-	[HideInInspector]
-	public int prefabId;
-	[HideInInspector]
 	public float damage;
-	//[HideInInspector]
-	//public int count;
 	[HideInInspector]
-	public float speed;
-
+	public float weaponSpeed;
 	[HideInInspector]
-	public int per;
+	public int PenetrationCount = 0;
+	public int Penetration = 0;
 
-	private Rigidbody2D rigid;
-
+	public Rigidbody2D rigid;
 	public PhotonView pv;
-
 	private float timer;
     private Player player;
-	private List<GameObject> shovelList;
+
 
 	private void Awake()
 	{
 		player = GameManager.Instance.player;
 		rigid = GetComponent<Rigidbody2D>();
 	}
-
-
-	public void Init(float damage, int per, Vector3 dir)
-	{
-		this.damage = damage;
-		this.per = per;
-
-		if (per > -1)
-		{
-			rigid.velocity = dir * 15f;
-		}
-	}
-
-	public void Init(ItemData data)
-    {
-		player = GameManager.Instance.player;
-
-
-        // Property Set
-        id = data.itemId;
-        damage = data.baseDamage * Character.Damage;
-		GameManager.Instance.shovelCount = data.baseCount + Character.Count;
-
-
-        for(int index  =0; index < GameManager.Instance.pool.prefabs.Length; index++)
-        {
-            if(data.prefab == GameManager.Instance.pool.prefabs[index])
-            {
-                prefabId = index;
-                break;
-            }
-        }
-
-        switch (id)
-        { 
-            case 0:
-				GameManager.Instance.shovelSpeed = 80 * Character.WeaponSpeed;
-				GameManager.Instance.pool.ShovelGet(prefabId, 1);
-				GameManager.Instance.pool.ShovelGet(prefabId, 1);
-				GameManager.Instance.pool.ShovelGet(prefabId, 1);
-
-				shovelList = GameManager.Instance.pool.pools[prefabId];
-
-				for(int i =0; i< shovelList.Count; i++)
-				{
-					shovelList[i].GetComponent<Weapon>().pv.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID,i , shovelList.Count);
-				}
-				break;
-
-            default:
-                speed = 0.5f * Character.WeaponRate;
-				break; 
-        
-        }
-    }
-
-
-	bool isbool; 
-	public void LevelUp(float damage, int count)
-	{
-		this.damage = damage * Character.Damage;
-		GameManager.Instance.shovelCount += count;
-		isbool = true;
-
-
-		if (id == 0)
-		{
-			GameManager.Instance.pool.ShovelGet(prefabId, 1);
-			//shovelList.Clear();
-
-			//shovelList = GameManager.Instance.pool.pools[prefabId];
-
-			Debug.Log(shovelList.Count);
-			Debug.Log(GameManager.Instance.pool.pools[prefabId].Count);
-
-			for (int i = 0; i < shovelList.Count; i++)
-			{
-				shovelList[i].GetComponent<Weapon>().pv.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID, i, shovelList.Count);
-			}
-		}
-
-		//player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
-	}
-
-	private void ReadyShovel()
-    {
-		Debug.Log(GameManager.Instance.shovelCount + "  is count");
-		Debug.Log(isbool);
-		for (int index = 0; index < GameManager.Instance.shovelCount;  index++)
-        {
-
-			if (index < player.Center.childCount)
-			{
-				PhotonView photonView = player.Center.GetChild(index).GetComponent<PhotonView>();
-				if (photonView != null)
-				{
-					photonView.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID, index);
-				}
-			}
-			else
-			{
-				GameManager.Instance.pool.ShovelGet(prefabId, index);
-				
-			}
-		}
-    }
 
 	[PunRPC]
 	void SetParentRPC(int parentViewID, int index, int count)
@@ -157,22 +45,63 @@ public class Weapon : MonoBehaviourPunCallbacks
 			Vector3 rotVec = Vector3.forward * 360 * index / count;
 			this.transform.Rotate(rotVec);
 			this.transform.Translate(this.transform.up * 1.5f, Space.World);
-			Init(damage, -1, Vector3.zero);
 		}
 	}
+
+	[PunRPC]
 	void ReadyFire()
 	{
-		//      if (player.scaneer.nearestTarget == null)
-		//          return;
+	
 
-		//      Vector3 targetPos = player.scaneer.nearestTarget.position;
-		//      Vector3 dir = targetPos - transform.position;
-		//      dir = dir.normalized;
+		Debug.Log("is no rpc");
+		//pv.Ownerwd
 
-		//      Transform bullet = GameManager.Instance.pool.Get(prefabId).transform;
-		//      bullet.position = transform.position;
-		//      bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-		//      bullet.GetComponent<Bullet>().Init(damage, count, dir);
+		if (GameManager.Instance.player2P == null)
+			GameManager.Instance.FindRemotePlayerPhotonViews();
+
+		if (GameManager.Instance.player2P != null)
+		{ 
+			SetPenetration();
+			if (pv.IsMine)
+			{
+				if (player.scaneer.nearestTarget == null)
+					return;
+
+				Vector3 targetPos = player.scaneer.nearestTarget.position;
+				Vector3 dir = targetPos - transform.position;
+				dir = dir.normalized;
+
+
+				this.transform.position = player.scaneer.transform.position;
+				this.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+
+
+				Vector2 direction = ((Vector2)targetPos - (Vector2)transform.position).normalized;
+				float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+				this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90)); // 총알을 목표 방향으로 회전
+				rigid.velocity = direction * 10f;
+			}
+			else
+			{
+				if (GameManager.Instance.player2P.GetComponent<Player>().scaneer.nearestTarget == null)
+					return;
+
+				Vector3 targetPos = GameManager.Instance.player2P.GetComponent<Player>().scaneer.nearestTarget.position;
+				Vector3 dir = targetPos - transform.position;
+				dir = dir.normalized;
+
+
+				this.transform.position = GameManager.Instance.player2P.GetComponent<Player>().scaneer.transform.position;
+				this.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+
+
+				Vector2 direction = ((Vector2)targetPos - (Vector2)transform.position).normalized;
+				float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+				this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90)); // 총알을 목표 방향으로 회전
+				rigid.velocity = direction * 10f;
+			}
+		
+		}
 
 		//AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
 	}
@@ -186,40 +115,45 @@ public class Weapon : MonoBehaviourPunCallbacks
 		switch (id)
 		{
 			case 0:
-
 				break;
 
-			default:
+			case 1:
 				timer += Time.deltaTime;
-
-				if (timer > speed)
+				if (timer > weaponSpeed)
 				{
 					timer = 0;
-					ReadyFire();
+					//ReadyFire();
 				}
 				break;
 		}
 
-		//Debug.Log(GameManager.Instance.shovelCount);
+		if (Input.GetKeyDown(KeyCode.Space) && id == 1)
+			pv.RPC("ReadyFire", RpcTarget.AllBuffered);
+			//ReadyFire();
 
-		//if (Input.GetKeyDown(KeyCode.W))
-		//	GameManager.Instance.shovelCount++;
-		//player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
+
 	}
 
-	
+	public void SetPenetration()
+	{
+		Penetration = PenetrationCount;
+	}
 
+
+
+
+	//탄알 관통력
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (!collision.CompareTag("Enemy") || per == -1)
+		if (!collision.CompareTag("Enemy") || Penetration == -1)
 			return;
 
-		per--;
+		Penetration--;
 
-		if (per == -1)
+		if (Penetration == 0)
 		{
 			rigid.velocity = Vector2.zero;
-			gameObject.SetActive(false);
+			this.transform.position = new Vector3(500, 500, 0);
 		}
 	}
 }

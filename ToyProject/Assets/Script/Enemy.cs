@@ -71,16 +71,48 @@ public class Enemy : MonoBehaviourPunCallbacks
 		this.health = health;
 	}
 
+	private bool alreadyHit = false;
+
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (!collision.CompareTag("Bullet") || !isLive)
 			return;
 
-		Debug.Log(collision.GetComponent<Weapon>().damage);
+		//if(collision.GetComponent<PhotonView>().IsMine && !PhotonNetwork.IsMasterClient)
+		//{
+		//	Debug.Log("isHit");
+		//	Debug.Log(collision.gameObject.name);
+
+		//}
+
 		health -= collision.GetComponent<Weapon>().damage;
+		//PhotonView photonView = GetComponent<PhotonView>();
+
+		//if (photonView != null)
+		//{
+		//	if (photonView.IsMine)
+		//	{
+		//		health -= collision.GetComponent<Weapon>().damage;
+		//		Debug.Log("This object is instantiated locally.");
+		//		//PenetrationCount(collision);
+		//	}
+		//	else if(!alreadyHit)
+		//	{
+		//		alreadyHit = true;
+		//		health -= collision.GetComponent<Weapon>().damage;
+		//		Debug.Log("This object is instantiated remotely. And Health Damage");
+		//		//PenetrationCount(collision);
+		//	}
+		//}
+
+
+
+
+		//Check();
 		StartCoroutine(KnockBack());
 
-		if(health > 0)
+
+		if (health > 0)
 		{
 			anim.SetTrigger("Hit");
 			AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
@@ -106,6 +138,26 @@ public class Enemy : MonoBehaviourPunCallbacks
 				AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
 		}
 	}
+
+	public void PenetrationCount(Collider2D collision)
+	{
+		Weapon weapon = collision.GetComponent<Weapon>();
+		if (weapon.id == 1 && !weapon.pv.IsMine)
+		{
+			//Debug.Log("isCount");
+			//weapon.Penetration--;
+			//Debug.Log(weapon.Penetration);
+
+			//if (weapon.Penetration == 0)
+			{
+				weapon.transform.position = new Vector3(500, 500, 0);
+				weapon.rigid.velocity = Vector2.zero;
+			}
+		}
+
+		alreadyHit = false;
+	}
+
 
 	IEnumerator KnockBack()
 	{

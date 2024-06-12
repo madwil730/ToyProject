@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +22,9 @@ public class GameManager : MonoBehaviour
 	public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
 	[Header("# Game Object")]
 	public Player player;
+	public GameObject player2P;
 	public PoolManager pool;
+	public WeaponManager weaponManager;
 	public LevlUp uiLevelUp;
 	public Result uiResult;
 	public Transform uiJoy;
@@ -44,7 +47,6 @@ public class GameManager : MonoBehaviour
 		health = maxHealth;
 		uiLevelUp.Select(playerId );
 		Resume();
-
 
 		AudioManager.instance.PlayBgm(true);
 		AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
@@ -111,8 +113,11 @@ public class GameManager : MonoBehaviour
 			GameVictroy();
 		}
 
-		if(Input.GetKeyDown(KeyCode.R))
+		if (Input.GetKeyDown(KeyCode.R))
 			uiLevelUp.Show();
+
+		if (Input.GetKeyDown(KeyCode.Q))
+			FindRemotePlayerPhotonViews();
 
 	}
 
@@ -144,10 +149,33 @@ public class GameManager : MonoBehaviour
 		uiJoy.localScale = Vector3.one;
 	}
 
-	public void test()
+	public void FindRemotePlayerPhotonViews()
 	{
-		Debug.Log(2323234);
+		Photon.Realtime.Player[] allPlayers = PhotonNetwork.PlayerList;
+
+		Debug.Log(allPlayers.Length);
+
+		foreach (Photon.Realtime.Player player in allPlayers)
+		{
+			if (!player.IsLocal) // 로컬 플레이어가 아닌 경우
+			{
+				Debug.Log("Found a remote player: " + player.NickName + ", ActorNumber: " + player.ActorNumber);
+
+				// 해당 리모트 플레이어의 PhotonView 찾기
+				PhotonView[] photonViews = FindObjectsOfType<PhotonView>();
+
+				foreach (PhotonView pv in photonViews)
+				{
+					if (pv.Owner != null && pv.Owner == player && pv.gameObject.GetComponent<Player>() != null)
+					{
+						player2P = pv.gameObject;
+						Debug.Log("PhotonView ID: " + pv.ViewID + " belongs to remote player: " + player.NickName);
+					}
+				}
+			}
+		}
 	}
+
 }
 
 

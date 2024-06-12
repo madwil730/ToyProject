@@ -168,8 +168,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  prefabId: 1
-  damage: 9
-  speed: 10
-  per: -1
+  damage: 4.5
+  weaponSpeed: 0
+  PenetrationCount: 0
+  Penetration: 0
+  rigid: {fileID: 0}
   pv: {fileID: 5193866618647715196}

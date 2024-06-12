@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
 	public PhotonView PV;
+	public PhotonView RemotePV;
 	public Vector2 inputVec;
     public float speed;
     // 수정 
@@ -19,7 +20,6 @@ public class Player : MonoBehaviour
 	public Transform Center;
     [SerializeField]
 	private RectTransform healthBar;
-	GameObject ob;
 	public Transform parentTransform; // 부모가 될 Transform
 
 	void Awake()
@@ -40,13 +40,14 @@ public class Player : MonoBehaviour
 
 	}
 
+
 	private void OnEnable()
 	{
         speed *= Character.Speed;
         anim.runtimeAnimatorController = animCon[GameManager.Instance.playerId];
 	}
 
-    // 플레이어 이동
+	// 플레이어 이동
 	private void Update()
 	{
 		if (!GameManager.Instance.isLive)
@@ -55,35 +56,21 @@ public class Player : MonoBehaviour
 		//healthBar.position = Camera.main.WorldToScreenPoint(GameManager.Instance.player.transform.position);
 
 		Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
-        rigid.MovePosition(rigid.position + nextVec);
+		rigid.MovePosition(rigid.position + nextVec);
 
 		anim.SetFloat("Speed", inputVec.magnitude);
 
-		if (inputVec.x != 0)
+		//PV.RPC("Flip", RpcTarget.AllBuffered);
+	}
+
+	[PunRPC]
+	void Flip()
+	{
+		if (inputVec.x != 0 && PV.IsMine)
 		{
 			spriter.flipX = inputVec.x < 0;
 		}
-
-	
-		//// 스페이스 총알 발사
-		//if (Input.GetKeyDown(KeyCode.Space))
-		//{
-
-		//	// PhotonNetwork.Instantiate를 사용하여 객체 생성
-		//	GameObject instantiatedObject = PhotonNetwork.Instantiate("Weapon/Cube", Vector3.zero, Quaternion.identity);
-
-		//	// 부모 설정을 동기화하는 RPC 호출
-		//	if (instantiatedObject != null)
-		//	{
-		//		PhotonView photonView = instantiatedObject.GetComponent<PhotonView>();
-		//		if (photonView != null)
-		//		{
-		//			photonView.RPC("SetParentRPC", RpcTarget.AllBuffered, PV.ViewID);
-		//		}
-		//	}
-		//}
 	}
-
 
 	private void OnCollisionStay2D(Collision2D collision)
 	{

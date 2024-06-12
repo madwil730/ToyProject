@@ -81,7 +81,6 @@ public class Shovel : MonoBehaviourPunCallbacks
 			Debug.Log(rotVec);
 			this.transform.Rotate(rotVec);
 			this.transform.Translate(this.transform.up * 1.5f, Space.World);
-			//Init(damage, -1, Vector3.zero);
 		}
 	}
 }

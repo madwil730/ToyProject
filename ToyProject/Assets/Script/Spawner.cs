@@ -46,12 +46,10 @@ public class Spawner : MonoBehaviourPunCallbacks
 
     public void Spawn()
     {
-		GameObject enemy = GameManager.Instance.pool.Get(0);
+		GameObject enemy = GameManager.Instance.pool.Get("Character/", 0);
 		enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
 		PhotonView photonView = enemy.GetComponent<PhotonView>();
-		//photonView.RPC("Init", RpcTarget.AllBuffered, spawnData[level]);
 		photonView.RPC("Init", RpcTarget.AllBuffered, spawnData[level].spriteType, spawnData[level].speed, spawnData[level].health);
-		//enemy.GetComponent<Enemy>().Init(spawnData[level]);
 	}
 }
 

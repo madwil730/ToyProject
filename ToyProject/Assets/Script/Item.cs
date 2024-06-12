@@ -58,7 +58,7 @@ public class Item : MonoBehaviour
 			case ItemData.ItemType.Range:
 				if(level == 0)
 				{
-					weapon.Init(data);
+					GameManager.Instance.weaponManager.Init(data);
 				}
 				else
 				{
@@ -68,7 +68,7 @@ public class Item : MonoBehaviour
 					nextDamage += data.baseDamage * data.damage[level];
 					nextCount += data.counts[level];
 
-					weapon.LevelUp(nextDamage, nextCount);	
+					GameManager.Instance.weaponManager.LevelUp(nextDamage, nextCount,data);	
 				}
 
 				level++;

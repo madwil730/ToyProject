@@ -32,6 +32,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 		GameManager.Instance.player = PhotonNetwork.Instantiate("Character/Player", Vector3.zero, Quaternion.identity).GetComponent<Player>();
 
 		GameManager.Instance.GameStart(0);
+		GameManager.Instance.FindRemotePlayerPhotonViews();
 	}
 
 }

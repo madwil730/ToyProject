@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class SceneCode : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public float speed = 5f; // 탄환 속도
+	private Vector2 target;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	// 목표 설정
+	public void SetTarget(Vector2 target)
+	{
+		this.target = target;
+		Vector2 direction = (target - (Vector2)transform.position).normalized;
+		GetComponent<Rigidbody2D>().velocity = direction * speed;
+	}
 }

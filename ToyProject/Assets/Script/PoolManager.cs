@@ -21,42 +21,9 @@ public class PoolManager : MonoBehaviour
 	}
 
 
-    public GameObject ShovelGet(int prefabindex, int count)
-    {
-        GameObject select = null;
+  
 
-        //foreach(GameObject item in pools[index])
-        //{
-        //    if(!item.activeSelf)
-        //    {
-        //        select = item;
-        //        select.SetActive(true);
-        //        break;
-        //    }
-        //}
-
-        if(!select)
-        {
-            select = PhotonNetwork.Instantiate("Weapon/"+prefabs[prefabindex].name, Vector3.zero, Quaternion.identity);
-
-            //부모 설정을 동기화하는 RPC 호출
-
-            //if (select != null)
-            //{
-            //    PhotonView photonView = select.GetComponent<PhotonView>();
-            //    if (photonView != null)
-            //    {
-            //        photonView.RPC("SetParentRPC", RpcTarget.AllBuffered, GameManager.Instance.player.PV.ViewID, count);
-            //    }
-            //}
-
-            pools[prefabindex].Add(select);       
-        }
-
-        return select;  
-    }
-
-	public GameObject Get(int prefabindex)
+	public GameObject Get(string str, int prefabindex)
 	{
 		GameObject select = null;
 
@@ -72,7 +39,7 @@ public class PoolManager : MonoBehaviour
 
 		if (!select)
 		{
-			select = PhotonNetwork.Instantiate("Character/" + prefabs[prefabindex].name,Vector3.one, Quaternion.identity);
+			select = PhotonNetwork.Instantiate(str + prefabs[prefabindex].name,Vector3.one, Quaternion.identity);
 			pools[prefabindex].Add(select);
 		}
 

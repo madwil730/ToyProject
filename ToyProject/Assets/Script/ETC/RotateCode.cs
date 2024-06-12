@@ -20,9 +20,5 @@ public class RotateCode : MonoBehaviourPunCallbacks
         this.transform.Rotate(Vector3.back * GameManager.Instance.shovelSpeed * Time.deltaTime);
     }
 
-	[PunRPC]
-	void bbb()
-	{
-		Debug.Log(5555);
-	}
+
 }
