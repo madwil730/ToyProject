@@ -20,26 +20,13 @@ public class PoolManager : MonoBehaviour
         }
 	}
 
-
-  
-
 	public GameObject Get(string str, int prefabindex)
 	{
 		GameObject select = null;
 
-		//foreach(GameObject item in pools[index])
-		//{
-		//    if(!item.activeSelf)
-		//    {
-		//        select = item;
-		//        select.SetActive(true);
-		//        break;
-		//    }
-		//}
-
 		if (!select)
 		{
-			select = PhotonNetwork.Instantiate(str + prefabs[prefabindex].name,Vector3.one, Quaternion.identity);
+			select = PhotonNetwork.Instantiate(str + prefabs[prefabindex].name,new Vector3(500,500,0), Quaternion.identity);
 			pools[prefabindex].Add(select);
 		}
 

@@ -183,6 +183,7 @@ MonoBehaviour:
   Center: {fileID: 9126357260699002779}
   healthBar: {fileID: 0}
   parentTransform: {fileID: 7975758112970511180}
+  health: 20
 --- !u!114 &7216385694568981616
 MonoBehaviour:
   m_ObjectHideFlags: 0

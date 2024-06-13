@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     [SerializeField]
 	private RectTransform healthBar;
 	public Transform parentTransform; // 부모가 될 Transform
+	public float health= 20f;
 
 	void Awake()
     {
@@ -76,13 +77,12 @@ public class Player : MonoBehaviour
 		anim.SetFloat("Speed", inputVec.magnitude);
 
 		if (Input.GetKeyDown(KeyCode.V))
-			PV.RPC("NotMne", RpcTarget.AllBuffered);
-
+			if (PV.IsMine)
+				Debug.Log(PV.ViewID);
 		if (Input.GetKeyDown(KeyCode.B))
-			PV.RPC("Mne", RpcTarget.AllBuffered);
+			if (!PV.IsMine)
+				Debug.Log(PV.ViewID);
 
-		//if(PV.IsMine)
-		//PV.RPC("Flip", RpcTarget.AllBuffered);
 	}
 
 	[PunRPC]
@@ -99,16 +99,22 @@ public class Player : MonoBehaviour
         if (!GameManager.Instance.isLive || collision.collider.CompareTag("Player"))
             return;
 
-        GameManager.Instance.health -= Time.deltaTime * 10;
+       // GameManager.Instance.health -= Time.deltaTime * 10;
+        health -= Time.deltaTime * 10;
 
-        if(GameManager.Instance.health < 0)
+        if(health < 0)
         {
             for(int index =2;  index < transform.childCount; index ++)
             {
                 transform.GetChild(index).gameObject.SetActive(false);
             }
 
-            anim.SetTrigger("Dead");
+			if (PV.IsMine)
+				GameManager.Instance.Player1Dead = true;
+			else if (!PV.IsMine)
+				GameManager.Instance.Player2Dead = true;
+
+			anim.SetTrigger("Dead");
             GameManager.Instance.GameOver();
         }
 	}
@@ -121,16 +127,16 @@ public class Player : MonoBehaviour
         inputVec = value.Get<Vector2>();
 	}
 
-	[PunRPC]
-	private void NotMne()
-	{
-		if(!PV.IsMine)
-		Debug.Log("Not Mine");
-	}
+	//[PunRPC]
+	//private void NotMne()
+	//{
+	//	if(!PV.IsMine)
+	//	Debug.Log("Not Mine");
+	//}
 
-	[PunRPC]
-	private void Mne()
-	{
-		Debug.Log("Mine");
-	}
+	//[PunRPC]
+	//private void Mne()
+	//{
+	//	Debug.Log("Mine");
+	//}
 }

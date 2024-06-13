@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
 	public static GameManager Instance;
 	[Header("# Game Control")]
 	public bool isLive;
+	public bool Player1Dead;
+	public bool Player2Dead;
 	public float gameTime;
 	public float maxGameTime = 2 * 10f;
 	[Header("# Player Info")]
@@ -54,13 +57,13 @@ public class GameManager : MonoBehaviour
 
 	public void GameOver()
 	{
+		if(Player1Dead && Player2Dead)
 		StartCoroutine(GameOverRoutine());
 	}
 
 	IEnumerator GameOverRoutine()
 	{
 		isLive = false;
-
 		yield return new WaitForSeconds(0.5f);
 		uiResult.gameObject.SetActive(true);
 		uiResult.Lose();
@@ -116,7 +119,8 @@ public class GameManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.R))
 			uiLevelUp.Show();
 
-
+		if (player2P == null)
+			FindRemotePlayerPhotonViews();
 	}
 
 	public void GetExp()
@@ -147,10 +151,11 @@ public class GameManager : MonoBehaviour
 		uiJoy.localScale = Vector3.one;
 	}
 
+
 	public void FindRemotePlayerPhotonViews()
 	{
 		Photon.Realtime.Player[] allPlayers = PhotonNetwork.PlayerList;
-
+		//Debug.Log(allPlayers.Length);
 
 		foreach (Photon.Realtime.Player player in allPlayers)
 		{
@@ -161,9 +166,10 @@ public class GameManager : MonoBehaviour
 				// 해당 리모트 플레이어의 PhotonView 찾기
 				PhotonView[] photonViews = FindObjectsOfType<PhotonView>();
 
+
 				foreach (PhotonView pv in photonViews)
 				{
-					if (pv.Owner != null && pv.Owner == player && pv.gameObject.GetComponent<Player>() != null)
+					if ( pv.Owner == player && pv.gameObject.GetComponent<Player>() != null)
 					{
 						player2P = pv.gameObject;
 						//Debug.Log("PhotonView ID: " + pv.ViewID + " belongs to remote player: " + player.NickName);

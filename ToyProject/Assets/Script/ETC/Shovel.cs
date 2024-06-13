@@ -6,6 +6,11 @@ using UnityEngine;
 
 public class Shovel : WeaponAbstract
 {
+	[PunRPC]
+	public override void Init(float damage)
+	{
+		this.damage = damage;
+	}
 
 	private void Awake()
 	{

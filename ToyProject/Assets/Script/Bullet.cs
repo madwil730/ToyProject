@@ -6,7 +6,7 @@ using UnityEngine;
 public class Bullet : WeaponAbstract
 {
 	private float waitTimer;
-	public float weaponSpeed = 1;
+	public float weaponSpeed = 0.1f;
 	public int PenetrationCount = 0;
 	public int Penetration = 0;
 	private void Awake()
@@ -18,11 +18,11 @@ public class Bullet : WeaponAbstract
 	[PunRPC]
 	void ReadyFire()
 	{
+		Debug.Log(523532);
+		//if (GameManager.Instance.player2P == null)
+		//	GameManager.Instance.FindRemotePlayerPhotonViews();
 
-		if (GameManager.Instance.player2P == null)
-			GameManager.Instance.FindRemotePlayerPhotonViews();
-
-		if (GameManager.Instance.player2P != null)
+		//if (GameManager.Instance.player2P != null)
 		{
 			SetPenetration();
 			if (pv.IsMine)
@@ -76,8 +76,10 @@ public class Bullet : WeaponAbstract
 
 	
 				waitTimer += Time.deltaTime;
+			
 				if (waitTimer > weaponSpeed)
 				{
+					Debug.Log(weaponSpeed);
 					waitTimer = 0;
 					ReadyFire();
 				}
@@ -114,5 +116,11 @@ public class Bullet : WeaponAbstract
 			rigid.velocity = Vector2.zero;
 			this.transform.position = new Vector3(500, 500, 0);
 		}
+	}
+
+	[PunRPC]
+	public override void Init(float damage)
+	{
+		this.damage = damage;	
 	}
 }
