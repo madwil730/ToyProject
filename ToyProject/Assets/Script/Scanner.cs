@@ -21,7 +21,8 @@ public class Scanner : MonoBehaviour
 		Transform result = null;
 		float diff = 100;
 
-		foreach(RaycastHit2D target in targets)
+
+		foreach (RaycastHit2D target in targets)
 		{
 			Vector3 myPos = transform.position;
 			Vector3 targetPos = target.transform.position;

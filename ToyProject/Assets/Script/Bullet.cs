@@ -76,7 +76,6 @@ public class Bullet : WeaponAbstract
 		if (!GameManager.Instance.isLive)
 			return;
 
-		Debug.Log(weaponSpeed);
 		waitTimer += Time.deltaTime;
 			
 		if (waitTimer > weaponSpeed)

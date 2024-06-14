@@ -83,6 +83,7 @@ public class Player : MonoBehaviour
 			if (!PV.IsMine)
 				Debug.Log(PV.ViewID);
 
+
 	}
 
 	[PunRPC]
@@ -100,7 +101,7 @@ public class Player : MonoBehaviour
             return;
 
        // GameManager.Instance.health -= Time.deltaTime * 10;
-        health -= Time.deltaTime * 10;
+        //health -= Time.deltaTime * 10;
 
         if(health < 0)
         {
@@ -115,7 +116,8 @@ public class Player : MonoBehaviour
 				GameManager.Instance.Player2Dead = true;
 
 			anim.SetTrigger("Dead");
-            GameManager.Instance.GameOver();
+			rigid.bodyType = RigidbodyType2D.Static;
+			GameManager.Instance.GameOver();
         }
 	}
 

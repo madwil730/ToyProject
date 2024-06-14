@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 	public Result uiResult;
 	public Transform uiJoy;
 	public GameObject enemyCleaner;
+	public bool isPlayOn;
 	
 	//WeaponDatas
 	[HideInInspector]
@@ -137,13 +138,16 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	[PunRPC]
 	public void Stop()
 	{
+		Debug.Log("is Stop");
 		isLive = false;	
 		Time.timeScale = 0;
 		uiJoy.localScale = Vector3.zero;
 	}
 
+	[PunRPC]
 	public void Resume()
 	{
 		isLive= true;
@@ -172,6 +176,7 @@ public class GameManager : MonoBehaviour
 					if ( pv.Owner == player && pv.gameObject.GetComponent<Player>() != null)
 					{
 						player2P = pv.gameObject;
+						isPlayOn = true;
 						//Debug.Log("PhotonView ID: " + pv.ViewID + " belongs to remote player: " + player.NickName);
 					}
 				}

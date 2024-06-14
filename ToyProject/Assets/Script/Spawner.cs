@@ -28,15 +28,13 @@ public class Spawner : MonoBehaviourPunCallbacks
 
 		//if (timer > 1)
 		//	return;
-		//else
-		//	if (PhotonNetwork.IsMasterClient)
-		//	Spawn();
-		//if (timer > spawnData[level].spawnTime)
-		//{
-		//    timer = 0;
-		//    Spawn();
+	
+		if (timer > spawnData[level].spawnTime && PhotonNetwork.IsMasterClient && GameManager.Instance.isPlayOn)
+		{
+			timer = 0;
+			Spawn();
 
-		//}
+		}
 
 		if (Input.GetKeyDown(KeyCode.A) &&PhotonNetwork.IsMasterClient )
 			Spawn();

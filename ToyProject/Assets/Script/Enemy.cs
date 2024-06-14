@@ -46,23 +46,27 @@ public class Enemy : MonoBehaviourPunCallbacks
 		if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
 			return;
 
-		if (scanner.nearestTarget == null)
+		if (scanner.nearestTarget == null )
 			return;
-		//Vector2 dirVec = (Vector2)scanner.nearestTarget.position - rigid.position;
-		//Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
-		//rigid.MovePosition(rigid.position + nextVec);
-		//rigid.velocity = Vector2.zero;
 
-		//spriter.flipX = scanner.nearestTarget.position.x < rigid.position.x;
+		if (scanner.nearestTarget.GetComponent<Rigidbody2D>().bodyType == RigidbodyType2D.Static)
+			return;
 
-		//if (Vector2.Distance((Vector2)scanner.nearestTarget.position, rigid.position) > 10)
-		//{
-		//	Vector3 playerDir = GameManager.Instance.player.inputVec;
-		//	float dirX = playerDir.x < 0 ? -1 : 1;
-		//	float dirY = playerDir.y < 0 ? -1 : 1;
+		Vector2 dirVec = (Vector2)scanner.nearestTarget.position - rigid.position;
+		Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
+		rigid.MovePosition(rigid.position + nextVec);
+		rigid.velocity = Vector2.zero;
 
-		//	transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
-		//}
+		spriter.flipX = scanner.nearestTarget.position.x < rigid.position.x;
+
+		if (Vector2.Distance((Vector2)scanner.nearestTarget.position, rigid.position) > 10)
+		{
+			Vector3 playerDir = GameManager.Instance.player.inputVec;
+			float dirX = playerDir.x < 0 ? -1 : 1;
+			float dirY = playerDir.y < 0 ? -1 : 1;
+
+			transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
+		}
 
 	}
 
@@ -116,6 +120,11 @@ public class Enemy : MonoBehaviourPunCallbacks
 		}
 	}
 
+	[PunRPC]
+	public void Damage()
+	{
+
+	}
 
 	IEnumerator KnockBack()
 	{
