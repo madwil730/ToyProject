@@ -39,17 +39,20 @@ public class Gear : MonoBehaviour
 
 	void RateUp()
 	{
-		WeaponAbstract[] weapons  = transform.parent.GetComponentsInChildren<WeaponAbstract>();	
+		//WeaponAbstract[] weapons  = transform.parent.GetComponentsInChildren<WeaponAbstract>();	
+		WeaponAbstract[] weapons = GameObject.FindObjectsOfType<WeaponAbstract>();
 
 		foreach (WeaponAbstract weapon in weapons) 
 		{
+			Debug.Log(weapon.id);	
 			switch(weapon.id)
 			{
+				//»ð
 				case 0:
-					//GameManager.Instance.shovelSpeed = 150 + (150 * rate);
 					break;
-				default:
-					//weapon.weaponSpeed = 0.5f *  (1f - rate);
+				// ÃÑ¾Ë
+				case 1:
+					weapon.GetComponent<Bullet>().weaponSpeed = rate;
 					break;
 			}
 		}

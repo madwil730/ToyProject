@@ -5,7 +5,6 @@ using UnityEngine;
 
 public abstract class WeaponAbstract : MonoBehaviourPunCallbacks
 {
-	[HideInInspector]
 	public int id;
 	[HideInInspector]
 	public float damage;

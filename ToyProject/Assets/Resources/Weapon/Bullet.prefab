@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46835609683a49c41acfd9bf5b99f07a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  id: 1
   damage: 3
   rigid: {fileID: 2548773845794617841}
   pv: {fileID: -2564669109691688515}

@@ -6,8 +6,11 @@ using UnityEngine;
 public class Bullet : WeaponAbstract
 {
 	private float waitTimer;
-	public float weaponSpeed = 0.1f;
+	[HideInInspector]
+	public float weaponSpeed = 1;
+	[HideInInspector]
 	public int PenetrationCount = 0;
+	[HideInInspector]
 	public int Penetration = 0;
 	private void Awake()
 	{
@@ -18,7 +21,6 @@ public class Bullet : WeaponAbstract
 	[PunRPC]
 	void ReadyFire()
 	{
-		Debug.Log(523532);
 		//if (GameManager.Instance.player2P == null)
 		//	GameManager.Instance.FindRemotePlayerPhotonViews();
 
@@ -42,7 +44,7 @@ public class Bullet : WeaponAbstract
 				Vector2 direction = ((Vector2)targetPos - (Vector2)transform.position).normalized;
 				float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 				this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90)); // 총알을 목표 방향으로 회전
-				rigid.velocity = direction * 10f;
+				rigid.velocity = direction * 15f;
 			}
 			else
 			{
@@ -61,7 +63,7 @@ public class Bullet : WeaponAbstract
 				Vector2 direction = ((Vector2)targetPos - (Vector2)transform.position).normalized;
 				float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 				this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90)); // 총알을 목표 방향으로 회전
-				rigid.velocity = direction * 10f;
+				rigid.velocity = direction * 15f;
 			}
 
 		}
@@ -74,18 +76,18 @@ public class Bullet : WeaponAbstract
 		if (!GameManager.Instance.isLive)
 			return;
 
-	
-				waitTimer += Time.deltaTime;
+		Debug.Log(weaponSpeed);
+		waitTimer += Time.deltaTime;
 			
-				if (waitTimer > weaponSpeed)
-				{
-					Debug.Log(weaponSpeed);
-					waitTimer = 0;
-					ReadyFire();
-				}
+		if (waitTimer > weaponSpeed)
+		{
+			Debug.Log(weaponSpeed);
+			waitTimer = 0;
+			ReadyFire();
+		}
 
-		if (Input.GetKeyDown(KeyCode.Space) && id == 1)
-			pv.RPC("ReadyFire", RpcTarget.AllBuffered);
+		//if (Input.GetKeyDown(KeyCode.Space) && id == 1)
+		//	pv.RPC("ReadyFire", RpcTarget.AllBuffered);
 	}
 
 	// 쏠때마다 총알 관통 빼는거 재수정 
