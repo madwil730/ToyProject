@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ public class Enemy : MonoBehaviourPunCallbacks
 {
     private float speed;
 	public float health;
+	public PhotonView pv;
 	private float maxHealth;	
 	public RuntimeAnimatorController[] animCon;
     //private Rigidbody2D target;
@@ -49,24 +51,43 @@ public class Enemy : MonoBehaviourPunCallbacks
 		if (scanner.nearestTarget == null )
 			return;
 
-		if (scanner.nearestTarget.GetComponent<Rigidbody2D>().bodyType == RigidbodyType2D.Static)
-			return;
-
-		Vector2 dirVec = (Vector2)scanner.nearestTarget.position - rigid.position;
-		Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
-		rigid.MovePosition(rigid.position + nextVec);
-		rigid.velocity = Vector2.zero;
-
-		spriter.flipX = scanner.nearestTarget.position.x < rigid.position.x;
-
-		if (Vector2.Distance((Vector2)scanner.nearestTarget.position, rigid.position) > 10)
+		Vector2 dirVec;
+		if (GameManager.Instance.Player1Dead)
 		{
-			Vector3 playerDir = GameManager.Instance.player.inputVec;
-			float dirX = playerDir.x < 0 ? -1 : 1;
-			float dirY = playerDir.y < 0 ? -1 : 1;
+			dirVec = (Vector2)GameManager.Instance.player2P.transform.position - rigid.position;
+			Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
+			rigid.MovePosition(rigid.position + nextVec);
+			rigid.velocity = Vector2.zero;
 
-			transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
+			spriter.flipX = scanner.nearestTarget.position.x < rigid.position.x;
 		}
+		else if (GameManager.Instance.Player2Dead)
+		{
+			dirVec = (Vector2)GameManager.Instance.player.transform.position - rigid.position;
+			Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
+			rigid.MovePosition(rigid.position + nextVec);
+			rigid.velocity = Vector2.zero;
+
+			spriter.flipX = scanner.nearestTarget.position.x < rigid.position.x;
+		}
+		else
+		{
+			dirVec = (Vector2)scanner.nearestTarget.position - rigid.position;
+			Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
+			rigid.MovePosition(rigid.position + nextVec);
+			rigid.velocity = Vector2.zero;
+
+			spriter.flipX = scanner.nearestTarget.position.x < rigid.position.x;
+		}
+
+		//if (Vector2.Distance((Vector2)scanner.nearestTarget.position, rigid.position) > 10)
+		//{
+		//	Vector3 playerDir = GameManager.Instance.player.inputVec;
+		//	float dirX = playerDir.x < 0 ? -1 : 1;
+		//	float dirY = playerDir.y < 0 ? -1 : 1;
+
+		//	transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
+		//}
 
 	}
 
@@ -82,7 +103,7 @@ public class Enemy : MonoBehaviourPunCallbacks
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (!collision.CompareTag("Bullet") || !isLive)
+		if (!collision.CompareTag("Bullet") || !isLive || !GameManager.Instance.isLive)
 			return;
 
 
@@ -90,7 +111,7 @@ public class Enemy : MonoBehaviourPunCallbacks
 	
 		PhotonView photonView = GetComponent<PhotonView>();
 
-		StartCoroutine(KnockBack());
+		//StartCoroutine(KnockBack());
 
 
 		if (health > 0)
@@ -101,11 +122,12 @@ public class Enemy : MonoBehaviourPunCallbacks
 		else
 		{
 			isLive = false;
-			
 			spriter.sortingOrder = 1;
 			coll.enabled = false;
 			rigid.simulated = false;
 			anim.SetBool("Dead", true);
+
+			//pv.RPC("isDead", RpcTarget.AllBuffered);
 
 
 			if ( collision.tag == "Bullet" && collision.GetComponent<PhotonView>().IsMine)
@@ -121,9 +143,13 @@ public class Enemy : MonoBehaviourPunCallbacks
 	}
 
 	[PunRPC]
-	public void Damage()
+	public void isDead()
 	{
-
+		isLive = false;
+		spriter.sortingOrder = 1;
+		coll.enabled = false;
+		rigid.simulated = false;
+		anim.SetBool("Dead", true);
 	}
 
 	IEnumerator KnockBack()

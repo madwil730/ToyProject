@@ -33,4 +33,20 @@ public class PoolManager : MonoBehaviour
 		return select;
 	}
 
+
+	public GameObject  Spawn(string str, int prefabindex, Vector3 vec)
+	{
+		GameObject select = null;
+
+		Debug.Log(vec);
+
+		if (!select)
+		{
+			select = PhotonNetwork.Instantiate(str + prefabs[prefabindex].name, vec, Quaternion.identity);
+			pools[prefabindex].Add(select);
+		}
+
+		return select;
+	}
+
 }

@@ -13,7 +13,7 @@ public class Spawner : MonoBehaviourPunCallbacks
 
 	private void Awake()
 	{
-		spawnPoint = GetComponentsInChildren<Transform>();
+		//spawnPoint = GetComponentsInChildren<Transform>();
 	
 
 	}
@@ -26,15 +26,15 @@ public class Spawner : MonoBehaviourPunCallbacks
 		timer += Time.deltaTime;
 		level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.gameTime / 10f), spawnData.Length - 1);
 
-		//if (timer > 1)
-		//	return;
-	
+
 		if (timer > spawnData[level].spawnTime && PhotonNetwork.IsMasterClient && GameManager.Instance.isPlayOn)
 		{
 			timer = 0;
 			Spawn();
 
 		}
+
+		//&& GameManager.Instance.isPlayOn
 
 		if (Input.GetKeyDown(KeyCode.A) &&PhotonNetwork.IsMasterClient )
 			Spawn();
@@ -44,8 +44,9 @@ public class Spawner : MonoBehaviourPunCallbacks
 
     public void Spawn()
     {
-		GameObject enemy = GameManager.Instance.pool.Get("Character/", 0);
-		enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+		Debug.Log("isMaster");
+		GameObject enemy = GameManager.Instance.pool.Spawn("Character/", 0, spawnPoint[Random.Range(1, spawnPoint.Length)].position);
+		//enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
 		PhotonView photonView = enemy.GetComponent<PhotonView>();
 		photonView.RPC("Init", RpcTarget.AllBuffered, spawnData[level].spriteType, spawnData[level].speed, spawnData[level].health);
 	}

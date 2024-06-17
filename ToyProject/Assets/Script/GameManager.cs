@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
 	public static GameManager Instance;
 	[Header("# Game Control")]
 	public bool isLive;
+	public PhotonView pv;
 	public bool Player1Dead;
 	public bool Player2Dead;
 	public float gameTime;
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
 	public Transform uiJoy;
 	public GameObject enemyCleaner;
 	public bool isPlayOn;
+	public Image temp;
 	
 	//WeaponDatas
 	[HideInInspector]
@@ -120,7 +123,16 @@ public class GameManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.R))
 			uiLevelUp.Show();
 
-		if (player2P == null)
+		//if (Input.GetKeyDown(KeyCode.T))
+		//	pv.RPC("Stop", RpcTarget.AllBuffered);
+
+		//if (Input.GetKeyDown(KeyCode.Y))
+		//	pv.RPC("Resume", RpcTarget.AllBuffered);
+
+		//if (Input.GetKeyDown(KeyCode.T))
+		//	isPlayOn = true;
+
+			if (player2P == null)
 			FindRemotePlayerPhotonViews();
 	}
 
@@ -141,18 +153,26 @@ public class GameManager : MonoBehaviour
 	[PunRPC]
 	public void Stop()
 	{
-		Debug.Log("is Stop");
 		isLive = false;	
-		Time.timeScale = 0;
+		//Time.timeScale = 0.1f;
 		uiJoy.localScale = Vector3.zero;
+		temp.gameObject.SetActive(true);
 	}
 
 	[PunRPC]
 	public void Resume()
 	{
-		isLive= true;
-		Time.timeScale = 1;
+		isLive = true;
+		Time.timeScale = 1f;
 		uiJoy.localScale = Vector3.one;
+		temp.gameObject.SetActive(false);
+	}
+
+	[PunRPC]
+	public void voice()
+	{
+		Debug.Log("voice");
+		
 	}
 
 

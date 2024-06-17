@@ -80,7 +80,7 @@ public class Bullet : WeaponAbstract
 			
 		if (waitTimer > weaponSpeed)
 		{
-			Debug.Log(weaponSpeed);
+			//Debug.Log(weaponSpeed);
 			waitTimer = 0;
 			ReadyFire();
 		}

@@ -44,7 +44,6 @@ public class Gear : MonoBehaviour
 
 		foreach (WeaponAbstract weapon in weapons) 
 		{
-			Debug.Log(weapon.id);	
 			switch(weapon.id)
 			{
 				//»ð

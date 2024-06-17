@@ -100,10 +100,9 @@ public class Player : MonoBehaviour
         if (!GameManager.Instance.isLive || collision.collider.CompareTag("Player"))
             return;
 
-       // GameManager.Instance.health -= Time.deltaTime * 10;
-        //health -= Time.deltaTime * 10;
+		health -= Time.deltaTime * 10;
 
-        if(health < 0)
+		if (health < 0)
         {
             for(int index =2;  index < transform.childCount; index ++)
             {

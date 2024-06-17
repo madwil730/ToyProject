@@ -60,6 +60,11 @@ MonoBehaviour:
   - SetPenetration
   - SetPenetrationCount
   - Damage
+  - Resume
+  - Stop
+  - Loadww
+  - voice
+  - isDead
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

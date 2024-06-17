@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,18 +18,22 @@ public class LevlUp : MonoBehaviour
 	{
 		Next();
 		rect.localScale = Vector3.one;
-		GameManager.Instance.Stop();
+		GameManager.Instance.pv.RPC("Stop", RpcTarget.AllBuffered);
 		AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
 		AudioManager.instance.EfflectBgm(true);
 	}
 
 	public void Hide()
 	{
+		//GameManager.Instance.pv.RPC("voice", RpcTarget.AllBuffered);
+
 		rect.localScale = Vector3.zero;
-		GameManager.Instance.Resume();
+		GameManager.Instance.pv.RPC("Resume", RpcTarget.AllBuffered);
 		AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
 		AudioManager.instance.EfflectBgm(false);
 	}
+
+
 
 	public void Select (int index)
 	{
